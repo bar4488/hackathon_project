@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
+
 class Meeting {
   String name;
   int? id;
@@ -8,6 +10,7 @@ class Meeting {
   DateTime end;
   String? topic;
   String? location;
+  List<String> members = [];
 
   Meeting({
     required this.name,
@@ -16,6 +19,7 @@ class Meeting {
     required this.end,
     this.topic,
     this.location,
+    required this.members,
   });
 
   Meeting copyWith({
@@ -25,6 +29,7 @@ class Meeting {
     DateTime? end,
     String? topic,
     String? location,
+    List<String>? members,
   }) {
     return Meeting(
       name: name ?? this.name,
@@ -33,6 +38,7 @@ class Meeting {
       end: end ?? this.end,
       topic: topic ?? this.topic,
       location: location ?? this.location,
+      members: members ?? this.members,
     );
   }
 
@@ -44,18 +50,21 @@ class Meeting {
       'end': end.millisecondsSinceEpoch,
       'topic': topic,
       'location': location,
+      'members': members,
     };
   }
 
   factory Meeting.fromMap(Map<String, dynamic> map) {
     return Meeting(
-      name: map['name'] as String,
-      id: map['id'] != null ? map['id'] as int : null,
-      start: DateTime.fromMillisecondsSinceEpoch(map['start'] as int),
-      end: DateTime.fromMillisecondsSinceEpoch(map['end'] as int),
-      topic: map['topic'] != null ? map['topic'] as String : null,
-      location: map['location'] != null ? map['location'] as String : null,
-    );
+        name: map['name'] as String,
+        id: map['id'] != null ? map['id'] as int : null,
+        start: DateTime.fromMillisecondsSinceEpoch(map['start'] as int),
+        end: DateTime.fromMillisecondsSinceEpoch(map['end'] as int),
+        topic: map['topic'] != null ? map['topic'] as String : null,
+        location: map['location'] != null ? map['location'] as String : null,
+        members: List<String>.from(
+          (map['members'] as List<String>),
+        ));
   }
 
   String toJson() => json.encode(toMap());
@@ -65,12 +74,13 @@ class Meeting {
 
   @override
   String toString() {
-    return 'Meeting(name: $name, id: $id, start: $start, end: $end, topic: $topic, location: $location)';
+    return 'Meeting(name: $name, id: $id, start: $start, end: $end, topic: $topic, location: $location, members: $members)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
+    final listEquals = const DeepCollectionEquality().equals;
 
     return other is Meeting &&
         other.name == name &&
@@ -78,7 +88,8 @@ class Meeting {
         other.start == start &&
         other.end == end &&
         other.topic == topic &&
-        other.location == location;
+        other.location == location &&
+        listEquals(other.members, members);
   }
 
   @override
@@ -88,6 +99,7 @@ class Meeting {
         start.hashCode ^
         end.hashCode ^
         topic.hashCode ^
-        location.hashCode;
+        location.hashCode ^
+        members.hashCode;
   }
 }
