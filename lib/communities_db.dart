@@ -62,7 +62,7 @@ class CommunitiesDatabase {
       print(result.exception.toString());
     }
 
-    print(result);
+    //print(result);
 
     print(result.data?["me"]["name"]);
 
@@ -87,7 +87,7 @@ class CommunitiesDatabase {
       print(result.exception.toString());
     }
 
-    print(result);
+    //print(result);
 
     print(result.data?["me"]["id"]);
 
@@ -291,8 +291,8 @@ class CommunitiesDatabase {
         print(result.exception.toString());
       }
     }
-    print(result);
-    print("added!!!");
+    //print(result);
+    //print("added!!!");
     print(result?.data);
     print(result!.data!["create_item"]["id"]);
     print("that was cool!\n\n\n");
@@ -351,8 +351,8 @@ class CommunitiesDatabase {
         print(result.exception.toString());
       }
     }
-    print(result);
-    print("added!!!");
+    //print(result);
+    //print("added!!!");
   }
 
   Future<Meeting> joinMeeting(
@@ -389,8 +389,8 @@ class CommunitiesDatabase {
         print(result.exception.toString());
       }
     }
-    print(result);
-    print("added!!!");
+    //print(result);
+    //print("added!!!");
     return Future.delayed(
       Duration(milliseconds: 200),
       () {
@@ -429,8 +429,8 @@ class CommunitiesDatabase {
         print(result.exception.toString());
       }
     }
-    print(result);
-    print("added!!!");
+    //print(result);
+    //print("added!!!");
     return Future.delayed(
       Duration(milliseconds: 200),
           () {
@@ -469,7 +469,7 @@ class CommunitiesDatabase {
         print(result.exception.toString());
       }
     }
-    print(result);
+    //print(result);
     print("added!!!");
     return Future.delayed(
       Duration(milliseconds: 200),
