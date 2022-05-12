@@ -4,11 +4,13 @@ import 'package:hackathon_project/models/community.dart';
 import 'package:hackathon_project/models/meeting.dart';
 
 class MainPageController extends ChangeNotifier {
+  CommunitiesDatabase database = CommunitiesDatabase.instance;
+
   List<Meeting> nextMeetings;
   List<Community> communities;
   bool loaded;
 
-  MainPageController(this.database)
+  MainPageController()
       : communities = [],
         loaded = false,
         nextMeetings = [] {
@@ -20,6 +22,4 @@ class MainPageController extends ChangeNotifier {
     loaded = true;
     notifyListeners();
   }
-
-  CommunitiesDatabase database;
 }
