@@ -1,4 +1,4 @@
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:graphql/client.dart';
 import 'package:hackathon_project/models/community.dart';
 import 'package:hackathon_project/models/meeting.dart';
 
@@ -7,6 +7,15 @@ class CommunitiesDatabase {
   Link link;
 
   Future<List<Community>> getAllCommunities() {
+
+    String GQLgetAllCommunities = "";
+
+
+   
+
+
+
+
     return Future.delayed(
       Duration(milliseconds: 200),
       () {
