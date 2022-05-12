@@ -25,7 +25,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
-    controller = MainPageController(CommunitiesDatabase());
+    controller = MainPageController();
     controller.addListener(() => setState(() {}));
     super.initState();
   }
