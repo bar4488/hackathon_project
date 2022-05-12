@@ -18,6 +18,7 @@ class CommunitiesDatabase {
   }
 
 
+
   Future<List<Community>> getAllCommunities() async {
 
     String GQLgetAllCommunities = "";
@@ -38,6 +39,7 @@ class CommunitiesDatabase {
 
     final List<dynamic> communities =
     result.data?["Group"] as List<dynamic>;
+
 
 
     return Future.delayed(
@@ -61,10 +63,10 @@ class CommunitiesDatabase {
         return Future.value(
           [
             Meeting(
-              name: "test1",
-              start: DateTime.now().subtract(Duration(days: 1)),
-              end: DateTime.now().subtract(Duration(hours: 23)),
-            ),
+                name: "test1",
+                start: DateTime.now().subtract(Duration(days: 1)),
+                end: DateTime.now().subtract(Duration(hours: 23)),
+                members: []),
           ],
         );
       },
