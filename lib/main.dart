@@ -23,7 +23,7 @@ void main() async {
   print("started running");
   CommunitiesDatabase.initialize(_link);
 
-  CommunitiesDatabase.instance.getAllCommunities();
+  CommunitiesDatabase.instance.getCommunity(2664574677);
   print("init completed");
   runApp(
     MyApp(

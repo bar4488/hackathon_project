@@ -33,7 +33,7 @@ class CommunitiesDatabase {
   Future<List<Community>> getAllCommunities() async {
     String GQLgetAllCommunities = r"""query 
     {
-      boards {
+      boards (limit: 200){
         id
         workspace_id
         name
@@ -81,18 +81,48 @@ class CommunitiesDatabase {
     );
   }
 
-  Future<List<Meeting>> getCommunityMeetings(int communityId) {
+  Future<Community> getCommunity(int communityId) async {
+    String GQLgetCommunity = r"""query getCommunity ($com_id: [Int])
+    {
+      boards (ids: $com_id ){
+        id
+        workspace_id
+        name
+        items{
+          id
+          name
+        }
+      }
+    }""";
+
+    final QueryOptions options = QueryOptions(
+      document: gql(GQLgetCommunity),
+      variables: <String, dynamic>{
+        'com_id': communityId,
+      },
+    );
+    GraphQLClient client = await getClient();
+    final QueryResult result = await client.query(options);
+    if (result.hasException) {
+      print(result.exception.toString());
+    }
+
+    //print(result);
+
+    final List<dynamic> communities = result.data?["boards"] as List<dynamic>;
+
+
+    List<Community> coms = communities
+        .map((e) => Community.fromMap(e as Map<String, dynamic>))
+        .toList();
+    //Community comm = makeCommunityFromParams(coms, result.data?["boards"]["workspace_id"], result.data?["boards"]["name"]);
+    print(coms);
+
     return Future.delayed(
       Duration(milliseconds: 200),
       () {
         return Future.value(
-          [
-            Meeting(
-                name: "test1",
-                start: DateTime.now().subtract(Duration(days: 1)),
-                end: DateTime.now().subtract(Duration(hours: 23)),
-                members: []),
-          ],
+          coms[0],
         );
       },
     );
