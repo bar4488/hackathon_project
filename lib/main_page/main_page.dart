@@ -13,10 +13,14 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   late MainPageController controller;
-  CommunitiesDatabase db = CommunitiesDatabase();
 
   List<Meeting> nextMeatings = [
-    Meeting(name: "abc", start: DateTime.now(), end: DateTime.now())
+    Meeting(
+      name: "abc",
+      start: DateTime.now(),
+      end: DateTime.now(),
+      members: [],
+    )
   ];
 
   @override
