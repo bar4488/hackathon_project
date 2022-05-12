@@ -33,7 +33,7 @@ class CommunitiesDatabase {
   Future<List<Community>> getAllCommunities() async {
     String GQLgetAllCommunities = r"""query 
     {
-      boards (limit: 1000){
+      boards (limit: 200){
         id
         workspace_id
         name
