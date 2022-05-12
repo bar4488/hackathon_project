@@ -29,13 +29,21 @@ class CommunitiesDatabase {
   }
 
   Future<List<Community>> getAllCommunities() async {
-    String GQLgetAllCommunities =
-        r"""query GQLgetAllCommunities($id_num : Int! )
+
+
+
+
+    String GQLgetAllCommunities = r"""query GQLgetAllCommunities($id_num : [Int] )
+
     {
       boards (ids: $id_num) {
         id
         workspace_id
         name
+        items{
+          id
+          name
+        }
       }
     }""";
 
@@ -45,23 +53,32 @@ class CommunitiesDatabase {
     );
     GraphQLClient client = await getClient();
     final QueryResult result = await client.query(options);
-
+    print("hello world!!!");
     if (result.hasException) {
       print(result.exception.toString());
     }
 
+
+    print(result);
+
     final List<dynamic> communities =
-        result.data?["boards"]["workspace_id"] as List<dynamic>;
+    result.data?["boards"] as List<dynamic>;
     print(communities);
-    Community comm = makeCommunityFromParams(result.data?["boards"]["id"],
-        result.data?["boards"]["workspace_id"], result.data?["boards"]["name"]);
+    print("here\n\n\n\n\n");
+    List<Community> coms = communities.map((e) => Community.fromMap(e as Map<String, dynamic>)).toList();
+
+    print("here\n\n\n\n\n");
+
+    //Community comm = makeCommunityFromParams(coms, result.data?["boards"]["workspace_id"], result.data?["boards"]["name"]);
+    print(coms);
+
 
     return Future.delayed(
       Duration(milliseconds: 200),
       () {
         return Future.value(
           [
-            comm,
+            coms[0],
             Community(meetings: [], name: "test2"),
             Community(meetings: [], name: "test3"),
           ],

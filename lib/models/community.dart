@@ -32,19 +32,27 @@ class Community {
     return <String, dynamic>{
       'name': name,
       'id': id,
-      'meetings': meetings.map((x) => x.toMap()).toList(),
+      'items': meetings.map((x) => x.toMap()).toList(),
     };
   }
 
   factory Community.fromMap(Map<String, dynamic> map) {
     return Community(
       name: map['name'] != null ? map['name'] as String : null,
-      id: map['id'] != null ? map['id'] as int : null,
-      meetings: List<Meeting>.from(
-        (map['meetings'] as List<int>).map<Meeting>(
-          (x) => Meeting.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      id: map['id'] != null ? int.tryParse(map['id']) as int : null,
+      meetings:
+      [Meeting(
+          name: "test1",
+          start: DateTime.now().subtract(Duration(days: 1)),
+          end: DateTime.now().subtract(Duration(hours: 23)),
+          members: [])]
+
+
+      // List<Meeting>.from(
+      //   (map['items'] as List<Object?>).map<Meeting>(
+      //     (x) => Meeting.fromMap(x as Map<String, dynamic>),
+      //   ),
+      // ),
     );
   }
 
