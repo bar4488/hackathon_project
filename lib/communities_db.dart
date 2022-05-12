@@ -149,7 +149,7 @@ class CommunitiesDatabase {
         'name': meeting.name,
       },
     );
-    print(client == null);
+
     final QueryResult? result = await client?.mutate(options);
     if (result != null ){
       if (result.hasException) {
