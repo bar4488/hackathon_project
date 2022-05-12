@@ -2,58 +2,66 @@
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
+
+import 'package:hackathon_project/models/Subscriber.dart';
 
 import 'meeting.dart';
 
 class Community {
-  int? id;
+  String? id;
   String? name;
   List<Meeting> meetings;
-  List<String> subscribers;
+  List<Subscriber>? subscribers;
 
   Community({
-    this.name,
     this.id,
+    this.name,
     required this.meetings,
+    this.subscribers,
   });
 
   Community copyWith({
+    String? id,
     String? name,
-    int? id,
     List<Meeting>? meetings,
+    List<Subscriber>? subscribers,
   }) {
     return Community(
-      name: name ?? this.name,
       id: id ?? this.id,
+      name: name ?? this.name,
       meetings: meetings ?? this.meetings,
+      subscribers: subscribers ?? this.subscribers,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'name': name,
       'id': id,
+      'name': name,
       'items': meetings.map((x) => x.toMap()).toList(),
+      'subscribers': subscribers?.map((x) => x.toMap()).toList(),
     };
   }
 
   factory Community.fromMap(Map<String, dynamic> map) {
     return Community(
+      id: map['id'] != null ? map['id'] as String : null,
       name: map['name'] != null ? map['name'] as String : null,
-      id: map['id'] != null ? int.tryParse(map['id']) as int : null,
-      meetings:
-      // [Meeting(
-      //     name: "test1",
-      //     start: DateTime.now().subtract(Duration(days: 1)),
-      //     end: DateTime.now().subtract(Duration(hours: 23)),
-      //     members: [])]
-
-
-      List<Meeting>.from(
-        (map['items'] as List<Object?>).map<Meeting>(
-          (x) => Meeting.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      meetings: map['items'] != null
+          ? List<Meeting>.from(
+              (map['items'] as List<Object?>).map<Meeting>(
+                (x) => Meeting.fromMap(x as Map<String, dynamic>),
+              ),
+            )
+          : [],
+      subscribers: map['subscribers'] != null
+          ? List<Subscriber>.from(
+              (map['subscribers'] as List<dynamic>).map<Subscriber?>(
+                (x) => Subscriber.fromMap(x as Map<String, dynamic>),
+              ),
+            )
+          : null,
     );
   }
 
@@ -63,19 +71,26 @@ class Community {
       Community.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'Community(name: $name, id: $id, meetings: $meetings)';
+  String toString() {
+    return 'Community(id: $id, name: $name, meetings: $meetings, subscribers: $subscribers)';
+  }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    final listEquals = const DeepCollectionEquality().equals;
 
     return other is Community &&
-        other.name == name &&
         other.id == id &&
-        listEquals(other.meetings, meetings);
+        other.name == name &&
+        listEquals(other.meetings, meetings) &&
+        listEquals(other.subscribers, subscribers);
   }
 
   @override
-  int get hashCode => name.hashCode ^ id.hashCode ^ meetings.hashCode;
+  int get hashCode {
+    return id.hashCode ^
+        name.hashCode ^
+        meetings.hashCode ^
+        subscribers.hashCode;
+  }
 }

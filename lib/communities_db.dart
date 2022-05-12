@@ -11,6 +11,7 @@ class CommunitiesDatabase {
     instance = CommunitiesDatabase._internal(link);
     instance.client = await instance.getClient();
   }
+
   GraphQLClient? client;
   Link link;
 
@@ -19,7 +20,10 @@ class CommunitiesDatabase {
   Future<String> getJSONMeeting(Meeting meeting) async
   {
     String myID = await getID();
-    String res = "{\"person\":{\"personsAndTeams\":[\"" + myID + "\"]},\"\"";
+    String res = "{\"person\":{\"personsAndTeams\":[{\"id\":\"" + myID + "\",\"kind\":\"person\"}]}," +
+        "\"date4\":{\"date\":\""+ meeting.end.year.toString() + "-" + meeting.end.month.toString() + "-" + meeting.end.day.toString() + "\"}," +
+        "\"date\":{\"date\":\""+ meeting.start.year.toString() + "-" + meeting.start.month.toString() + "-" + meeting.start.day.toString() + "\"}, " +
+        "\"text:\":\"text\"}";
 
 
     return res;
@@ -79,7 +83,7 @@ class CommunitiesDatabase {
     print(result.data?["me"]["id"]);
 
 
-    return result.data?["me"]["id"];
+    return result.data!["me"]["id"].toString();
   }
 
   Future<GraphQLClient> getClient() async {
@@ -92,7 +96,7 @@ class CommunitiesDatabase {
   }
 
   Community makeCommunityFromParams(String id, int workspace_id, String name) {
-    Community res = Community(name: name, id: int.parse(id), meetings: []);
+    Community res = Community(name: name, id: id, meetings: []);
     return res;
   }
 
@@ -147,7 +151,7 @@ class CommunitiesDatabase {
     );
   }
 
-  Future<Community> getMyBoards(int communityId) async {
+  Future<List<Community>> getMyBoards(int communityId) async {
     String GQLgetCommunity = r"""query getBoards
     {
       boards{
@@ -184,14 +188,20 @@ class CommunitiesDatabase {
         .map((e) => Community.fromMap(e as Map<String, dynamic>))
         .toList();
     //Community comm = makeCommunityFromParams(coms, result.data?["boards"]["workspace_id"], result.data?["boards"]["name"]);
-    List<Community> myCommunity = [];
-    for(Community community in coms)
-      if()
+    List<Community> myCommunities = [];
+    for(Community community in coms) {
+      if (community.subscribers != null && community.subscribers!.contains(myId) && !myCommunities.contains(community))
+      {
+        myCommunities.add(community);
+      }
+    }
+    print("my comms!");
+    print(myCommunities);
     return Future.delayed(
       Duration(milliseconds: 200),
           () {
         return Future.value(
-          coms[0],
+          myCommunities,
         );
       },
     );
@@ -227,7 +237,6 @@ class CommunitiesDatabase {
 
     final List<dynamic> communities = result.data?["boards"] as List<dynamic>;
 
-
     List<Community> coms = communities
         .map((e) => Community.fromMap(e as Map<String, dynamic>))
         .toList();
@@ -245,9 +254,8 @@ class CommunitiesDatabase {
   }
 
   Future<Meeting> createMeeting(int communityId, Meeting meeting) async {
-
     String GQLcreateMeeting = r"""
-    mutation createMeeting($communityID: Int!, $name: String, $vals: String) {
+    mutation createMeeting($communityID: Int!, $name: String, $vals: JSON) {
       create_item (board_id: $communityID, item_name: $name, column_values: $vals) {
           id
        }
@@ -255,7 +263,7 @@ class CommunitiesDatabase {
     
     """;
 
-    String jason = meeting.toJson();
+    String jason = await getJSONMeeting(meeting);
     print(jason);
     print("jake ^^^ \n res ____");
     final MutationOptions options = MutationOptions(
@@ -267,7 +275,7 @@ class CommunitiesDatabase {
     );
 
     final QueryResult? result = await client?.mutate(options);
-    if (result != null ){
+    if (result != null) {
       if (result.hasException) {
         print(result.exception.toString());
       }
