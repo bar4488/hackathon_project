@@ -20,9 +20,11 @@ void main() async {
     cache: GraphQLCache(),
     link: _link,
   );
-
+  print("started running");
   CommunitiesDatabase.initialize(_link);
 
+  CommunitiesDatabase.instance.getAllCommunities();
+  print("init completed");
   runApp(
     MyApp(
       link: _link,
