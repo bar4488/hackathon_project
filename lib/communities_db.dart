@@ -1,10 +1,10 @@
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:graphql/client.dart';
 import 'package:hackathon_project/models/community.dart';
 import 'package:hackathon_project/models/meeting.dart';
 
 class CommunitiesDatabase {
-  CommunitiesDatabase(this.link);
-  Link link;
+  CommunitiesDatabase({this.link});
+  Link? link;
 
   Future<List<Community>> getAllCommunities() {
     return Future.delayed(
