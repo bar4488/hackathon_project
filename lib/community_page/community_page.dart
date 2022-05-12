@@ -133,6 +133,13 @@ class _CommunityPageState extends State<CommunityPage> {
   }
 
   Widget buildMeetingRow(meeting) {
-    return Center();
+    return Container(
+      color: Colors.white,
+      child: Column(
+        children: [
+          Text("meeting"),
+        ],
+      ),
+    );
   }
 }
