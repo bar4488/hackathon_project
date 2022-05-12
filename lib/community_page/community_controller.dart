@@ -25,7 +25,9 @@ class CommunityPageController extends ChangeNotifier {
 
   Future<List<Meeting>> getAllCommunityMeetings(int communityId) async
   {
-    return (await database.getCommunity(communityId)).meetings;
+    List<Meeting> m = (await database.getCommunity(communityId)).)meetings;
+    m.sort((Meeting a, Meeting b){return a.start.compareTo(b.start) ;});
+    return m;
   } // TODO: maybe there is no need to pull this from the server every time
 
   CommunityPageController(this.community)
