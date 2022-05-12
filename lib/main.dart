@@ -23,6 +23,11 @@ void main() async {
   );
   print("started running");
   CommunitiesDatabase.initialize(_link);
+  // print(await CommunitiesDatabase.instance.getID());
+  // Community c = await CommunitiesDatabase.instance.getCommunity(2665023500);
+  // Meeting m = c.meetings[3];
+  // CommunitiesDatabase.instance.joinMeeting(2665023500.toString(),29957324.toString(), m);
+  //
   runApp(
     MyApp(
       link: _link,

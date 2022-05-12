@@ -333,22 +333,28 @@ class CommunitiesDatabase {
   Future<Meeting> joinMeeting(
       String Community_ID, String userID, Meeting meeting) async {
     String GQLcreateMeeting = r"""
-    mutation createMeeting($communityID: Int!, $name: String, $vals: JSON) {
-      create_item (board_id: $communityID, item_name: $name, column_values: $vals) {
+    mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: JSON!) {
+      change_column_value (board_id: $communityID, item_id: $meetingID, column_id: "person", value: $vals) {
           id
        }
     }
     
     """;
 
-    String jason = await getJSONMeeting(meeting);
+    String jason = '{"personsAndTeams":[';
+    for (String member in meeting.members)
+      {
+        jason+='{"id":' + member + ',"kind":"person"},';
+      }
+    jason +=  '{"id":' + userID + ',"kind":"person"}]}';
     print(jason);
     print("jake ^^^ \n res ____");
     final MutationOptions options = MutationOptions(
       document: gql(GQLcreateMeeting),
       variables: <String, dynamic>{
-        'communityID': Community_ID,
-        'name': meeting.name,
+        'communityID': int.parse(Community_ID),
+        'meetingID': int.tryParse(meeting.id!),
+        'vals': jason
       },
     );
 
