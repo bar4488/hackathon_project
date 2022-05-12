@@ -459,7 +459,10 @@ class CommunitiesDatabase {
   }
 
 
- 
+  // Future<Profile> getProfile(String userName)
+  // {
+  //
+  // }
 
 
 
