@@ -265,13 +265,11 @@ class CommunitiesDatabase {
         goodm = m;
       }
     }
-
     if (goodm != null) {
       this.joinMeeting(communityId.toString(), await getID(), goodm);
       this.addEndTime(communityId.toString(), goodm.end, goodm);
       this.addStartTime(communityId.toString(), goodm.start, goodm);
     }
-
     return meeting;
   }
 

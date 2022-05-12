@@ -42,14 +42,14 @@ class NextMeetingCards extends StatelessWidget {
           ),
           Center(
             child: Text(
-              f.format(meeting.start),
+              f2.format(meeting.start),
               textAlign: TextAlign.center,
               style: TextStyle(fontWeight: FontWeight.w200, fontSize: 18),
             ),
           ),
           Center(
             child: Text(
-              f2.format(meeting.start),
+              "${meeting.duration.inHours} hours, ${meeting.duration.inMinutes % 60} minutes",
               textAlign: TextAlign.center,
               style: TextStyle(fontWeight: FontWeight.w200, fontSize: 18),
             ),
@@ -58,7 +58,10 @@ class NextMeetingCards extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.place_outlined),
+                Icon(
+                  Icons.place_outlined,
+                  color: Color(0xff585858),
+                ),
                 Text(
                   meeting.location ?? "no location",
                   style: TextStyle(
@@ -72,36 +75,20 @@ class NextMeetingCards extends StatelessWidget {
           Expanded(
             child: Stack(
               fit: StackFit.expand,
-              children: [
-                Positioned(
+              children: List.generate(
+                meeting.members.length,
+                (index) => Positioned(
                   width: 60,
-                  left: 0,
+                  left: 30 * index.toDouble(),
                   child: CircleAvatar(
+                    backgroundColor: Colors.primaries[
+                        meeting.members[index].hashCode %
+                            Colors.primaries.length],
+                    foregroundColor: Colors.white,
                     child: Icon(Icons.person),
                   ),
                 ),
-                Positioned(
-                  left: 30,
-                  width: 60,
-                  child: CircleAvatar(
-                    child: Icon(Icons.person),
-                  ),
-                ),
-                Positioned(
-                  left: 60,
-                  width: 60,
-                  child: CircleAvatar(
-                    child: Icon(Icons.person),
-                  ),
-                ),
-                Positioned(
-                  left: 90,
-                  width: 60,
-                  child: CircleAvatar(
-                    child: Icon(Icons.person),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         ],
