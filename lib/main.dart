@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,12 +11,34 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
+    final httpLink = HttpLink(
+      "https://api.monday.com/v2",
+
+    );
+
+    final AuthLink authLink = AuthLink(
+      getToken: () async => 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjE2MDE2NDA5NSwidWlkIjoyOTk1NzMyNCwiaWFkIjoiMjAyMi0wNS0xMlQwNzozNjozNS45NDZaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MTE4NzU5MjIsInJnbiI6InVzZTEifQ.xtCU7DCY7Jjy0Quyx9iFsloU76Hq94xvNfpYalaN-dI',
+
+    );
+
+    final Link link = authLink.concat(httpLink);
+
+    ValueNotifier<GraphQLClient> client = ValueNotifier(
+      GraphQLClient(
+        link: link,
+        // The default store is the InMemoryStore, which does NOT persist to disk
+        cache: GraphQLCache(store: InMemoryStore()),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+    return GraphQLProvider(
+      client: client,
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.green,
+        ),
+        home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      ),
     );
   }
 }
