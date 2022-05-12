@@ -39,6 +39,13 @@ class MainPageController extends ChangeNotifier {
     return meetings.reversed.toList();
   }
 
+
+  Future<List<String>> getSubscribersForCommunity(int communityId) async
+  {
+    return await database.getSubscribers(communityId);
+  }
+
+
   Future loadContent() async {
     loaded = false;
     notifyListeners();
