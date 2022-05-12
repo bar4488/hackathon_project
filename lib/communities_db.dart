@@ -282,14 +282,12 @@ class CommunitiesDatabase {
           goodm = m;
         }
     }
-
     if (goodm != null) {
       print(goodm.end);
       this.joinMeeting(communityId.toString(), await getID(), goodm);
       this.addEndTime(communityId.toString(), goodm.end, goodm);
       this.addStartTime(communityId.toString(), goodm.start, goodm);
     }
-
     return meeting;
 
   }
