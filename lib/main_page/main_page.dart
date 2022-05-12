@@ -16,15 +16,6 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   late MainPageController controller;
 
-  List<Meeting> nextMeatings = [
-    Meeting(
-      name: "abc",
-      start: DateTime.now(),
-      end: DateTime.now(),
-      members: [],
-    )
-  ];
-
   @override
   void initState() {
     controller = MainPageController();
@@ -94,7 +85,7 @@ class _MainPageState extends State<MainPage> {
                     physics: BouncingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     children: [
-                      for (var meating in nextMeatings)
+                      for (var meating in controller.nextMeetings)
                         buildNextMeating(meating)
                     ],
                   ),
