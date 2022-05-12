@@ -76,15 +76,29 @@ class _MainPageState extends State<MainPage> {
                                 color: Color(0xff595959),
                               ),
                             ),
-                            IconButton(
-                              onPressed: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: ((context) => SubscribePage()),
-                                  ),
-                                );
-                              },
-                              icon: Icon(Icons.add),
+                            Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: ((context) => SubscribePage()),
+                                      ),
+                                    );
+                                  },
+                                  icon: Icon(Icons.refresh),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: ((context) => SubscribePage()),
+                                      ),
+                                    );
+                                  },
+                                  icon: Icon(Icons.add),
+                                ),
+                              ],
                             )
                           ],
                         ),
@@ -97,7 +111,7 @@ class _MainPageState extends State<MainPage> {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "Next meetings",
+                      "What's happening now",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,

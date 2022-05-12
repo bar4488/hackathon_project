@@ -12,19 +12,16 @@ class CommunityPageController extends ChangeNotifier {
   String? myId;
   bool loaded;
 
-  Future<Meeting> addMeeting(int communityId, Meeting meeting) async
-  {
+  Future<Meeting> addMeeting(int communityId, Meeting meeting) async {
     return await database.createMeeting(communityId, meeting);
   }
 
-  Future<Meeting> joinMeeting(Meeting meeting) async
-  {
+  Future<Meeting> joinMeeting(Meeting meeting) async {
     meeting.members.add(await database.getUsername());
     return await database.updateMeeting(meeting);
   }
 
-  Future<List<Meeting>> getAllCommunityMeetings(int communityId) async
-  {
+  Future<List<Meeting>> getAllCommunityMeetings(int communityId) async {
     return (await database.getCommunity(communityId)).meetings;
   } // TODO: maybe there is no need to pull this from the server every time
 
@@ -34,8 +31,7 @@ class CommunityPageController extends ChangeNotifier {
     loadContent();
   }
 
-  Future<Meeting> addUserToMeeting(String communityId, Meeting meeting) async
-  {
+  Future<Meeting> addUserToMeeting(String communityId, Meeting meeting) async {
     Meeting newM = await database.joinMeeting(communityId, myId!, meeting);
     //meetings = await getAllCommunityMeetings(int.parse(communityId));
     meetings.add(meeting); // TODO: remove
@@ -43,20 +39,17 @@ class CommunityPageController extends ChangeNotifier {
     return newM;
   }
 
-  Future<Meeting> createMeeting(int communityId, Meeting meeting) async
-  {
+  Future<Meeting> createMeeting(int communityId, Meeting meeting) async {
     Meeting newM = await database.createMeeting(communityId, meeting);
     //meetings = await getAllCommunityMeetings(communityId);
     meetings.add(meeting); // TODO: remove
     notifyListeners();
     return newM;
-
   }
 
-
   Future loadContent() async {
-    loaded = true;
     myId = await database.getID();
+    loaded = true;
     notifyListeners();
   }
 }

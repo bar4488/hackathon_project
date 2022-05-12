@@ -66,8 +66,8 @@ class Meeting {
     return Meeting(
       name: map['name'] as String,
       id: map['id'],
-      start: f.parse(start),
-      end: f.parse(end),
+      start: start.isEmpty ? DateTime.now() : f.parse(start),
+      end: end.isEmpty ? DateTime.now() : f.parse(end),
       members: members.split(", "),
       description: description,
       location: location,
