@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:hackathon_project/community_page/community_controller.dart';
 import 'package:hackathon_project/models/community_meeting.dart';
 import 'package:intl/intl.dart';
 
 class ModalViewSession extends StatefulWidget {
-  const ModalViewSession({Key? key, required this.meeting}) : super(key: key);
+  const ModalViewSession({
+    Key? key,
+    required this.meeting,
+    required this.controller,
+  }) : super(key: key);
   final CommunityMeeting meeting;
+  final CommunityPageController controller;
 
   @override
   State<ModalViewSession> createState() => _ModalViewSessionState();
@@ -58,7 +64,11 @@ class _ModalViewSessionState extends State<ModalViewSession> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              onPressed: () {
+              onPressed: () async {
+                await widget.controller.addUserToMeeting(
+                  widget.meeting.community.id!,
+                  widget.meeting.toMeeting(),
+                );
                 Navigator.of(context).pop();
               },
               child: Text("Join!"),
