@@ -38,7 +38,7 @@ class MeetingCard extends StatelessWidget {
             ),
             Center(
               child: Text(
-                meeting.topic ?? "no description",
+                meeting.description ?? "no description",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.w200, fontSize: 18),
               ),
