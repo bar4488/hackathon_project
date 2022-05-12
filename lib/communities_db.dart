@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:graphql/client.dart';
 import 'package:hackathon_project/models/community.dart';
 import 'package:hackathon_project/models/meeting.dart';
+import 'package:intl/intl.dart';
 
 class CommunitiesDatabase {
   static late CommunitiesDatabase instance;
@@ -17,32 +20,42 @@ class CommunitiesDatabase {
 
   final int workspace_id = 1513929;
 
-  Future<String> getJSONMeeting(Meeting meeting) async
-  {
-    String myID = await getID();
-    String res = "{\"person\":{\"personsAndTeams\":[{\"id\":\"" + myID + "\",\"kind\":\"person\"}]}," +
-        "\"date4\":{\"date\":\""+ meeting.end.year.toString() + "-" + meeting.end.month.toString() + "-" + meeting.end.day.toString() + "\"}," +
-        "\"date\":{\"date\":\""+ meeting.start.year.toString() + "-" + meeting.start.month.toString() + "-" + meeting.start.day.toString() + "\"}, " +
-        "\"text:\":\"text\"}";
+  Future<String> getJSONMeeting(Meeting meeting) async {
+    DateFormat date_format = DateFormat("YYYY-MM-DD");
+    DateFormat time_format = DateFormat("HH:mm:ss");
 
+    String myID = await getID();
+    String res = json.encode({
+      "person": {
+        "personsAndTeams": [
+          {"id": myID, "kind": "person"}
+        ]
+      },
+      "date": {
+        "date": date_format.format(meeting.start),
+        "time": time_format.format(meeting.start)
+      },
+      "date4": {
+        "date": date_format.format(meeting.end),
+        "time": time_format.format(meeting.end)
+      },
+    });
 
     return res;
   }
 
-
   Future<String> getUsername() async {
-    String GQLgetUserName = r"""query {
+    String GQLgetUserName =
+        r"""query {
        me {
           name
           id
         }
       }""";
 
-
     final QueryOptions options = QueryOptions(
       document: gql(GQLgetUserName),
-      variables: <String, dynamic>{
-      },
+      variables: <String, dynamic>{},
     );
     GraphQLClient client = await getClient();
     final QueryResult result = await client.query(options);
@@ -54,23 +67,21 @@ class CommunitiesDatabase {
 
     print(result.data?["me"]["name"]);
 
-
     return result.data?["me"]["name"];
   }
 
   Future<String> getID() async {
-    String GQLgetUserName = r"""query {
+    String GQLgetUserName =
+        r"""query {
        me {
           name
           id
         }
       }""";
 
-
     final QueryOptions options = QueryOptions(
       document: gql(GQLgetUserName),
-      variables: <String, dynamic>{
-      },
+      variables: <String, dynamic>{},
     );
     GraphQLClient client = await getClient();
     final QueryResult result = await client.query(options);
@@ -81,7 +92,6 @@ class CommunitiesDatabase {
     print(result);
 
     print(result.data?["me"]["id"]);
-
 
     return result.data!["me"]["id"].toString();
   }
@@ -101,7 +111,8 @@ class CommunitiesDatabase {
   }
 
   Future<List<Community>> getAllCommunities() async {
-    String GQLgetAllCommunities = r"""query 
+    String GQLgetAllCommunities =
+        r"""query 
     {
       boards (limit: 200){
         id
@@ -152,7 +163,8 @@ class CommunitiesDatabase {
   }
 
   Future<Community> getCommunity(int communityId) async {
-    String GQLgetCommunity = r"""query getCommunity ($com_id: [Int])
+    String GQLgetCommunity =
+        r"""query getCommunity ($com_id: [Int])
     {
       boards (ids: $com_id ){
         id
@@ -198,7 +210,8 @@ class CommunitiesDatabase {
   }
 
   Future<Meeting> createMeeting(int communityId, Meeting meeting) async {
-    String GQLcreateMeeting = r"""
+    String GQLcreateMeeting =
+        r"""
     mutation createMeeting($communityID: Int!, $name: String, $vals: JSON) {
       create_item (board_id: $communityID, item_name: $name, column_values: $vals) {
           id
@@ -215,6 +228,7 @@ class CommunitiesDatabase {
       variables: <String, dynamic>{
         'communityID': communityId,
         'name': meeting.name,
+        'column_values': jason
       },
     );
 
