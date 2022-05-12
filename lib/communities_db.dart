@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:graphql/client.dart';
 import 'package:hackathon_project/models/community.dart';
 import 'package:hackathon_project/models/meeting.dart';
+import 'package:hackathon_project/models/profile.dart';
 import 'package:intl/intl.dart';
 
 class CommunitiesDatabase {
@@ -19,6 +20,7 @@ class CommunitiesDatabase {
   Link link;
 
   final int workspace_id = 1513929;
+  final int metadata_id = 2667544617;
 
   Future<String> getJSONMeeting(Meeting meeting) async {
     DateFormat date_format = DateFormat("YYYY-MM-DD");
@@ -455,4 +457,11 @@ class CommunitiesDatabase {
       },
     );
   }
+
+
+ 
+
+
+
+
 }
