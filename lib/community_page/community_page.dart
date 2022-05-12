@@ -136,7 +136,11 @@ class _CommunityPageState extends State<CommunityPage> {
             borderRadius: BorderRadius.circular(27),
             onTap: () {
               showModalBottomSheet(
-                  context: context, builder: (context) => ModalAddSession());
+                context: context,
+                builder: (context) => ModalAddSession(
+                  controller: controller,
+                ),
+              );
             },
             child: Ink(
               decoration: BoxDecoration(

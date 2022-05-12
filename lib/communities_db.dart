@@ -118,6 +118,9 @@ class CommunitiesDatabase {
         items{
           id
           name
+          column_values {
+            text
+          }
         }
       }
     }""";
@@ -162,15 +165,16 @@ class CommunitiesDatabase {
     String GQLgetCommunity = r"""query getBoards
     {
       boards{
-        subscribers{
-        id
-        }
         id
         workspace_id
         name
+
         items{
           id
           name
+          column_values {
+            text
+          }
         }
       }
     }""";
@@ -224,6 +228,9 @@ class CommunitiesDatabase {
         items{
           id
           name
+          column_values {
+            text
+          }
         }
       }
     }""";
