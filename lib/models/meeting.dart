@@ -2,21 +2,32 @@
 import 'dart:convert';
 
 class Meeting {
-  String? name;
+  String name;
   int? id;
-
+  DateTime start;
+  DateTime end;
+  String? topic;
   Meeting({
-    this.name,
-    required this.id,
+    required this.name,
+    this.id,
+    required this.start,
+    required this.end,
+    this.topic,
   });
 
   Meeting copyWith({
     String? name,
     int? id,
+    DateTime? start,
+    DateTime? end,
+    String? topic,
   }) {
     return Meeting(
       name: name ?? this.name,
       id: id ?? this.id,
+      start: start ?? this.start,
+      end: end ?? this.end,
+      topic: topic ?? this.topic,
     );
   }
 
@@ -24,13 +35,19 @@ class Meeting {
     return <String, dynamic>{
       'name': name,
       'id': id,
+      'start': start.millisecondsSinceEpoch,
+      'end': end.millisecondsSinceEpoch,
+      'topic': topic,
     };
   }
 
   factory Meeting.fromMap(Map<String, dynamic> map) {
     return Meeting(
-      name: map['name'] != null ? map['name'] as String : null,
+      name: map['name'] as String,
       id: map['id'] != null ? map['id'] as int : null,
+      start: DateTime.fromMillisecondsSinceEpoch(map['start'] as int),
+      end: DateTime.fromMillisecondsSinceEpoch(map['end'] as int),
+      topic: map['topic'] != null ? map['topic'] as String : null,
     );
   }
 
@@ -40,15 +57,28 @@ class Meeting {
       Meeting.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'Meeting(name: $name, id: $id)';
+  String toString() {
+    return 'Meeting(name: $name, id: $id, start: $start, end: $end, topic: $topic)';
+  }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is Meeting && other.name == name && other.id == id;
+    return other is Meeting &&
+        other.name == name &&
+        other.id == id &&
+        other.start == start &&
+        other.end == end &&
+        other.topic == topic;
   }
 
   @override
-  int get hashCode => name.hashCode ^ id.hashCode;
+  int get hashCode {
+    return name.hashCode ^
+        id.hashCode ^
+        start.hashCode ^
+        end.hashCode ^
+        topic.hashCode;
+  }
 }
