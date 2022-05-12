@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon_project/models/community_meeting.dart';
 import 'package:hackathon_project/models/meeting.dart';
+import 'package:hackathon_project/widgets/PeopleRow.dart';
 import 'package:intl/intl.dart';
 
 class NextMeetingCards extends StatelessWidget {
@@ -75,23 +76,7 @@ class NextMeetingCards extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: List.generate(
-                    meeting.members.length,
-                    (index) => Positioned(
-                      width: 60,
-                      left: 30 * index.toDouble(),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.primaries[
-                            meeting.members[index].hashCode %
-                                Colors.primaries.length],
-                        foregroundColor: Colors.white,
-                        child: Icon(Icons.person),
-                      ),
-                    ),
-                  ),
-                ),
+                child: PeopleRow(people: meeting.members),
               ),
             ],
           ),

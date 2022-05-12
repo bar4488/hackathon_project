@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon_project/models/community.dart';
 import 'package:hackathon_project/models/meeting.dart';
+import 'package:hackathon_project/widgets/PeopleRow.dart';
 import 'package:intl/intl.dart';
 
 class CommunityCard extends StatelessWidget {
@@ -51,6 +52,8 @@ class CommunityCard extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
+            if (community.subscribers != null)
+              PeopleRow(people: community.subscribers!)
           ],
         ),
       ),
