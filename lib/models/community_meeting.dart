@@ -5,6 +5,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:hackathon_project/models/community.dart';
+import 'package:hackathon_project/models/meeting.dart';
 
 class CommunityMeeting {
   Community community;
@@ -26,6 +27,16 @@ class CommunityMeeting {
     this.location,
     required this.members,
   });
+
+  static CommunityMeeting fromMeeting(Community community, Meeting meeting) {
+    return CommunityMeeting(
+      community: community,
+      name: meeting.name,
+      start: meeting.start,
+      end: meeting.end,
+      members: meeting.members,
+    );
+  }
 
   CommunityMeeting copyWith({
     Community? community,
