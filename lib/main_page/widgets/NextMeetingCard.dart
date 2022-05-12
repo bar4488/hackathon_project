@@ -25,7 +25,10 @@ class NextMeetingCards extends StatelessWidget {
         children: [
           Text(
             meeting.name,
-            style: TextStyle(fontSize: 22),
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
+            textAlign: TextAlign.center,
           ),
           Row(
             children: [
