@@ -26,13 +26,29 @@ class CommunityCard extends StatelessWidget {
       child: InkWell(
         onTap: onPress,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              community.name!,
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
+            SizedBox(
+              width: 72,
+              height: 72,
+              child: FittedBox(
+                child: CircleAvatar(
+                  backgroundColor: Color(0xffE2FFA6),
+                  child: Icon(
+                    Icons.computer,
+                    color: Color(0xff828282),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Text(
+                community.name!,
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
             ),
           ],
