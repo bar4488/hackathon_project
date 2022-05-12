@@ -5,7 +5,7 @@ import 'package:hackathon_project/models/meeting.dart';
 class CommunitiesDatabase {
   CommunitiesDatabase(this.link);
   Link link;
-  final int workspace_id = 3;
+  final int workspace_id = 2663479462;
 
   Future<GraphQLClient> getClient() async {
     /// initialize Hive and wrap the default box in a HiveStore
@@ -17,17 +17,28 @@ class CommunitiesDatabase {
     );
   }
 
-
+  Community makeCommunityFromParams(String id, int workspace_id, String name)
+  {
+    Community res = Community(name: name, id: int.parse(id), meetings: []);
+    return res;
+  }
 
   Future<List<Community>> getAllCommunities() async {
 
-    String GQLgetAllCommunities = "";
+    String GQLgetAllCommunities = r"""query GQLgetAllCommunities($id_num : Int! )
+    {
+      boards (ids: $id_num) {
+        id
+        workspace_id
+        name
+      }
+    }""";
 
 
     final QueryOptions options = QueryOptions(
       document: gql(GQLgetAllCommunities),
       variables: <String, dynamic>{
-        'workspace_id': workspace_id
+        'id_num': workspace_id
       },
     );
     GraphQLClient client = await getClient();
@@ -38,16 +49,16 @@ class CommunitiesDatabase {
     }
 
     final List<dynamic> communities =
-    result.data?["Group"] as List<dynamic>;
-
-
+    result.data?["boards"]["workspace_id"] as List<dynamic>;
+    print(communities);
+    Community comm = makeCommunityFromParams(result.data?["boards"]["id"], result.data?["boards"]["workspace_id"], result.data?["boards"]["name"]);
 
     return Future.delayed(
       Duration(milliseconds: 200),
       () {
         return Future.value(
           [
-            Community(meetings: [], name: "test1"),
+            comm,
             Community(meetings: [], name: "test2"),
             Community(meetings: [], name: "test3"),
           ],
