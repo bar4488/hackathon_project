@@ -7,12 +7,15 @@ class Meeting {
   DateTime start;
   DateTime end;
   String? topic;
+  String? location;
+
   Meeting({
     required this.name,
     this.id,
     required this.start,
     required this.end,
     this.topic,
+    this.location,
   });
 
   Meeting copyWith({
@@ -21,6 +24,7 @@ class Meeting {
     DateTime? start,
     DateTime? end,
     String? topic,
+    String? location,
   }) {
     return Meeting(
       name: name ?? this.name,
@@ -28,6 +32,7 @@ class Meeting {
       start: start ?? this.start,
       end: end ?? this.end,
       topic: topic ?? this.topic,
+      location: location ?? this.location,
     );
   }
 
@@ -38,6 +43,7 @@ class Meeting {
       'start': start.millisecondsSinceEpoch,
       'end': end.millisecondsSinceEpoch,
       'topic': topic,
+      'location': location,
     };
   }
 
@@ -48,6 +54,7 @@ class Meeting {
       start: DateTime.fromMillisecondsSinceEpoch(map['start'] as int),
       end: DateTime.fromMillisecondsSinceEpoch(map['end'] as int),
       topic: map['topic'] != null ? map['topic'] as String : null,
+      location: map['location'] != null ? map['location'] as String : null,
     );
   }
 
@@ -58,7 +65,7 @@ class Meeting {
 
   @override
   String toString() {
-    return 'Meeting(name: $name, id: $id, start: $start, end: $end, topic: $topic)';
+    return 'Meeting(name: $name, id: $id, start: $start, end: $end, topic: $topic, location: $location)';
   }
 
   @override
@@ -70,7 +77,8 @@ class Meeting {
         other.id == id &&
         other.start == start &&
         other.end == end &&
-        other.topic == topic;
+        other.topic == topic &&
+        other.location == location;
   }
 
   @override
@@ -79,6 +87,7 @@ class Meeting {
         id.hashCode ^
         start.hashCode ^
         end.hashCode ^
-        topic.hashCode;
+        topic.hashCode ^
+        location.hashCode;
   }
 }
