@@ -137,7 +137,6 @@ class CommunitiesDatabase {
         communities.add(board);
       }
     }
-    print("hit");
     List<Community> coms = communities
         .map((e) => Community.fromMap(e as Map<String, dynamic>))
         .toList();

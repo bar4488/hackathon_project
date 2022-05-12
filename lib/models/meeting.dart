@@ -59,8 +59,6 @@ class Meeting {
 
   factory Meeting.fromMap(Map<String, dynamic> map) {
     var columnValues = map["column_values"] as List<dynamic>;
-    print(columnValues);
-    print("\n\n\n\n\this is the bad guy!!!\n\n\n\n\n\n");
     var members = columnValues[0]["text"] as String;
     var start = columnValues[1]["text"] as String;
     var end = columnValues[2]["text"] as String;
