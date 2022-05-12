@@ -41,18 +41,18 @@ class Community {
       name: map['name'] != null ? map['name'] as String : null,
       id: map['id'] != null ? int.tryParse(map['id']) as int : null,
       meetings:
-      [Meeting(
-          name: "test1",
-          start: DateTime.now().subtract(Duration(days: 1)),
-          end: DateTime.now().subtract(Duration(hours: 23)),
-          members: [])]
+      // [Meeting(
+      //     name: "test1",
+      //     start: DateTime.now().subtract(Duration(days: 1)),
+      //     end: DateTime.now().subtract(Duration(hours: 23)),
+      //     members: [])]
 
 
-      // List<Meeting>.from(
-      //   (map['items'] as List<Object?>).map<Meeting>(
-      //     (x) => Meeting.fromMap(x as Map<String, dynamic>),
-      //   ),
-      // ),
+      List<Meeting>.from(
+        (map['items'] as List<Object?>).map<Meeting>(
+          (x) => Meeting.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
     );
   }
 

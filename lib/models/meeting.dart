@@ -57,14 +57,19 @@ class Meeting {
   factory Meeting.fromMap(Map<String, dynamic> map) {
     return Meeting(
         name: map['name'] as String,
-        id: map['id'] != null ? map['id'] as int : null,
-        start: DateTime.fromMillisecondsSinceEpoch(map['start'] as int),
-        end: DateTime.fromMillisecondsSinceEpoch(map['end'] as int),
+        id: map['id'] != null ? int.tryParse(map['id']) as int : null,
+        start: DateTime.now().subtract(Duration(days: 1)),
+        end: DateTime.now().subtract(Duration(hours: 23)),
+        //start: DateTime.fromMillisecondsSinceEpoch(map['start'] as int),
+        //end: DateTime.fromMillisecondsSinceEpoch(map['end'] as int),
         topic: map['topic'] != null ? map['topic'] as String : null,
         location: map['location'] != null ? map['location'] as String : null,
-        members: List<String>.from(
-          (map['members'] as List<String>),
-        ));
+        members: []
+
+        // List<String>.from(
+        //   (map['members'] as List<String>),
+        // )
+    );
   }
 
   String toJson() => json.encode(toMap());

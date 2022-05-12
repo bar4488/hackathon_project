@@ -12,7 +12,7 @@ class CommunitiesDatabase {
   }
 
   Link link;
-  final int workspace_id = 2663479462;
+  final int workspace_id = 1513929;
 
   Future<GraphQLClient> getClient() async {
     /// initialize Hive and wrap the default box in a HiveStore
@@ -33,10 +33,9 @@ class CommunitiesDatabase {
 
 
 
-    String GQLgetAllCommunities = r"""query GQLgetAllCommunities($id_num : [Int] )
-
+    String GQLgetAllCommunities = r"""query 
     {
-      boards (ids: $id_num) {
+      boards {
         id
         workspace_id
         name
@@ -49,7 +48,6 @@ class CommunitiesDatabase {
 
     final QueryOptions options = QueryOptions(
       document: gql(GQLgetAllCommunities),
-      variables: <String, dynamic>{'id_num': workspace_id},
     );
     GraphQLClient client = await getClient();
     final QueryResult result = await client.query(options);
@@ -59,12 +57,22 @@ class CommunitiesDatabase {
     }
 
 
-    print(result);
+    //print(result);
 
-    final List<dynamic> communities =
-    result.data?["boards"] as List<dynamic>;
+    final List<dynamic> allBoards = result.data?["boards"] as List<dynamic>;
+    final List<dynamic> communities = [];
+
+    for (dynamic board in allBoards)
+      {
+        if (board["workspace_id"] == workspace_id)
+          {
+            communities.add(board);
+          }
+      }
+
+
     print(communities);
-    print("here\n\n\n\n\n");
+    print("^^^^^^ communities\n\n\n\n\n");
     List<Community> coms = communities.map((e) => Community.fromMap(e as Map<String, dynamic>)).toList();
 
     print("here\n\n\n\n\n");
