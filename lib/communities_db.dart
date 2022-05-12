@@ -7,11 +7,13 @@ class CommunitiesDatabase {
 
   CommunitiesDatabase._internal(this.link);
 
-  static void initialize(Link link) {
+  static void initialize(Link link) async {
     instance = CommunitiesDatabase._internal(link);
+    instance.client = await instance.getClient();
   }
-
+  GraphQLClient? client;
   Link link;
+
   final int workspace_id = 1513929;
 
   Future<GraphQLClient> getClient() async {
@@ -96,9 +98,11 @@ class CommunitiesDatabase {
     );
   }
 
-  Future<Meeting> createMeeting(int communityId, Meeting meeting) {
+  Future<Meeting> createMeeting(int communityId, Meeting meeting) async {
 
     String GQLcreateMeeting = r"""""";
+
+
 
     final MutationOptions options = MutationOptions(
       document: gql(GQLcreateMeeting),
@@ -106,6 +110,14 @@ class CommunitiesDatabase {
         'starrableId': 1,
       },
     );
+
+    final QueryResult? result = await client?.mutate(options);
+    if (result != null ){
+      if (result.hasException) {
+        print(result.exception.toString());
+      }
+    }
+
 
     return Future.delayed(
       Duration(milliseconds: 200),
