@@ -137,7 +137,6 @@ class CommunitiesDatabase {
         communities.add(board);
       }
     }
-
     List<Community> coms = communities
         .map((e) => Community.fromMap(e as Map<String, dynamic>))
         .toList();
@@ -204,6 +203,7 @@ class CommunitiesDatabase {
           id
           name
           column_values {
+            value
             text
           }
         }
@@ -223,6 +223,8 @@ class CommunitiesDatabase {
     }
 
     final List<dynamic> communities = result.data?["boards"] as List<dynamic>;
+
+    print("hit");
 
     List<Community> coms = communities
         .map((e) => Community.fromMap(e as Map<String, dynamic>))
@@ -337,6 +339,37 @@ class CommunitiesDatabase {
     }
 
     return meeting;
+  }
+
+  Future<List<String>> getSubscribers(int communityID) async {
+    String GQLgetSubscribers =
+        r"""query getSubscribers ($com_id: [Int])
+    {
+      boards (ids: $com_id ){
+        subscribers{
+          name
+        }
+      }
+    }""";
+
+    final QueryOptions options = QueryOptions(
+      document: gql(GQLgetSubscribers),
+      variables: <String, dynamic>{
+        'com_id': communityID,
+      },
+    );
+    GraphQLClient client = await getClient();
+    final QueryResult result = await client.query(options);
+    if (result.hasException) {
+      print(result.exception.toString());
+    }
+
+    final List<dynamic> subscribers =
+        result.data?["boards"][0]["subscribers"] as List<dynamic>;
+
+    List<String> subs = subscribers.map((e) => e['name'] as String).toList();
+
+    return subs;
   }
 
   Future<Meeting> addEndTime(

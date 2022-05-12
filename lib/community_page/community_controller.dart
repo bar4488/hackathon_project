@@ -40,6 +40,7 @@ class CommunityPageController extends ChangeNotifier {
   Future<Meeting> addUserToMeeting(String communityId, Meeting meeting) async {
     Meeting newM = await database.joinMeeting(communityId, myId!, meeting);
     meetings = await getAllCommunityMeetings(int.parse(communityId));
+    myMeetings = getMyCommunityMeetings();
     notifyListeners();
     return newM;
   }
