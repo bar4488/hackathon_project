@@ -11,6 +11,7 @@ class CommunitiesDatabase {
     instance = CommunitiesDatabase._internal(link);
     instance.client = await instance.getClient();
   }
+
   GraphQLClient? client;
   Link link;
 
@@ -95,7 +96,7 @@ class CommunitiesDatabase {
   }
 
   Community makeCommunityFromParams(String id, int workspace_id, String name) {
-    Community res = Community(name: name, id: int.parse(id), meetings: []);
+    Community res = Community(name: name, id: id, meetings: []);
     return res;
   }
 
@@ -180,7 +181,6 @@ class CommunitiesDatabase {
 
     final List<dynamic> communities = result.data?["boards"] as List<dynamic>;
 
-
     List<Community> coms = communities
         .map((e) => Community.fromMap(e as Map<String, dynamic>))
         .toList();
@@ -198,7 +198,6 @@ class CommunitiesDatabase {
   }
 
   Future<Meeting> createMeeting(int communityId, Meeting meeting) async {
-
     String GQLcreateMeeting = r"""
     mutation createMeeting($communityID: Int!, $name: String, $vals: JSON) {
       create_item (board_id: $communityID, item_name: $name, column_values: $vals) {
@@ -220,7 +219,7 @@ class CommunitiesDatabase {
     );
 
     final QueryResult? result = await client?.mutate(options);
-    if (result != null ){
+    if (result != null) {
       if (result.hasException) {
         print(result.exception.toString());
       }
