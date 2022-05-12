@@ -68,7 +68,9 @@ class _MainPageState extends State<MainPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Welcome Bar",
+                              controller.loaded
+                                  ? "Welcome ${controller.username}"
+                                  : "Loading...",
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                 fontSize: 26,
@@ -158,11 +160,13 @@ class _MainPageState extends State<MainPage> {
                       CommunityCard(
                         community: community,
                         onPress: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => CommunityPage(
-                              community: community,
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => CommunityPage(
+                                community: community,
+                              ),
                             ),
-                          ));
+                          );
                         },
                       )
                   ],

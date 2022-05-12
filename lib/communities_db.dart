@@ -150,15 +150,7 @@ class CommunitiesDatabase {
         .toList();
     //Community comm = makeCommunityFromParams(coms, result.data?["boards"]["workspace_id"], result.data?["boards"]["name"]);
     print(coms);
-
-    return Future.delayed(
-      Duration(milliseconds: 200),
-      () {
-        return Future.value(
-          coms,
-        );
-      },
-    );
+    return coms;
   }
 
   Future<List<Community>> getMyBoards(int communityId) async {
@@ -208,14 +200,7 @@ class CommunitiesDatabase {
     }
     print("my comms!");
     print(myCommunities);
-    return Future.delayed(
-      Duration(milliseconds: 200),
-      () {
-        return Future.value(
-          myCommunities,
-        );
-      },
-    );
+    return myCommunities;
   }
 
   Future<Community> getCommunity(int communityId) async {
@@ -257,14 +242,7 @@ class CommunitiesDatabase {
     //Community comm = makeCommunityFromParams(coms, result.data?["boards"]["workspace_id"], result.data?["boards"]["name"]);
     print(coms);
 
-    return Future.delayed(
-      Duration(milliseconds: 200),
-      () {
-        return Future.value(
-          coms[0],
-        );
-      },
-    );
+    return coms[0];
   }
 
   Future<Meeting> createMeeting(int communityId, Meeting meeting) async {
@@ -291,8 +269,7 @@ class CommunitiesDatabase {
         print(result.exception.toString());
       }
     }
-    //print(result);
-    //print("added!!!");
+
     print(result?.data);
     print(result!.data!["create_item"]["id"]);
     print("that was cool!\n\n\n");
@@ -305,27 +282,20 @@ class CommunitiesDatabase {
           goodm = m;
         }
     }
+
     if (goodm != null) {
       print(goodm.end);
       this.joinMeeting(communityId.toString(), await getID(), goodm);
       this.addEndTime(communityId.toString(), goodm.end, goodm);
       this.addStartTime(communityId.toString(), goodm.start, goodm);
     }
-    return Future.delayed(
-      Duration(milliseconds: 200),
-      () {
-        return Future.value(meeting);
-      },
-    );
+
+    return meeting;
+
   }
 
-  Future<Meeting> updateMeeting(Meeting meeting) {
-    return Future.delayed(
-      Duration(milliseconds: 200),
-      () {
-        return Future.value(meeting);
-      },
-    );
+  Future<Meeting> updateMeeting(Meeting meeting) async {
+    return meeting;
   }
 
   Future addCommunityUser(
@@ -367,11 +337,10 @@ class CommunitiesDatabase {
     """;
 
     String jason = '{"personsAndTeams":[';
-    for (String member in meeting.members)
-      {
-        jason+='{"id":' + member + ',"kind":"person"},';
-      }
-    jason +=  '{"id":' + userID + ',"kind":"person"}]}';
+    for (String member in meeting.members) {
+      jason += '{"id":' + member + ',"kind":"person"},';
+    }
+    jason += '{"id":' + userID + ',"kind":"person"}]}';
     print(jason);
     print("jake ^^^ \n res ____");
     final MutationOptions options = MutationOptions(
@@ -389,14 +358,9 @@ class CommunitiesDatabase {
         print(result.exception.toString());
       }
     }
-    //print(result);
-    //print("added!!!");
-    return Future.delayed(
-      Duration(milliseconds: 200),
-      () {
-        return Future.value(meeting);
-      },
-    );
+
+    return meeting;
+
   }
 
   Future<Meeting> addEndTime(
