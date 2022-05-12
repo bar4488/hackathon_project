@@ -81,7 +81,7 @@ class _MainPageState extends State<MainPage> {
                       ),
                     )),
                 SizedBox(
-                  height: 170,
+                  height: 180,
                   child: ListView(
                     physics: BouncingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
