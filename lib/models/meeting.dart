@@ -8,16 +8,15 @@ class Meeting {
   int? id;
   DateTime start;
   DateTime end;
-  String? topic;
+  String? description;
   String? location;
   List<String> members = [];
-
   Meeting({
     required this.name,
     this.id,
     required this.start,
     required this.end,
-    this.topic,
+    this.description,
     this.location,
     required this.members,
   });
@@ -27,7 +26,7 @@ class Meeting {
     int? id,
     DateTime? start,
     DateTime? end,
-    String? topic,
+    String? description,
     String? location,
     List<String>? members,
   }) {
@@ -36,7 +35,7 @@ class Meeting {
       id: id ?? this.id,
       start: start ?? this.start,
       end: end ?? this.end,
-      topic: topic ?? this.topic,
+      description: description ?? this.description,
       location: location ?? this.location,
       members: members ?? this.members,
     );
@@ -48,7 +47,7 @@ class Meeting {
       'id': id,
       'start': start.millisecondsSinceEpoch,
       'end': end.millisecondsSinceEpoch,
-      'topic': topic,
+      'description': description,
       'location': location,
       'members': members,
     };
@@ -57,19 +56,15 @@ class Meeting {
   factory Meeting.fromMap(Map<String, dynamic> map) {
     return Meeting(
         name: map['name'] as String,
-        id: map['id'] != null ? int.tryParse(map['id']) as int : null,
-        start: DateTime.now().subtract(Duration(days: 1)),
-        end: DateTime.now().subtract(Duration(hours: 23)),
-        //start: DateTime.fromMillisecondsSinceEpoch(map['start'] as int),
-        //end: DateTime.fromMillisecondsSinceEpoch(map['end'] as int),
-        topic: map['topic'] != null ? map['topic'] as String : null,
+        id: map['id'] != null ? map['id'] as int : null,
+        start: DateTime.fromMillisecondsSinceEpoch(map['start'] as int),
+        end: DateTime.fromMillisecondsSinceEpoch(map['end'] as int),
+        description:
+            map['description'] != null ? map['description'] as String : null,
         location: map['location'] != null ? map['location'] as String : null,
-        members: []
-
-        // List<String>.from(
-        //   (map['members'] as List<String>),
-        // )
-    );
+        members: List<String>.from(
+          (map['members'] as List<String>),
+        ));
   }
 
   String toJson() => json.encode(toMap());
@@ -79,7 +74,7 @@ class Meeting {
 
   @override
   String toString() {
-    return 'Meeting(name: $name, id: $id, start: $start, end: $end, topic: $topic, location: $location, members: $members)';
+    return 'Meeting(name: $name, id: $id, start: $start, end: $end, description: $description, location: $location, members: $members)';
   }
 
   @override
@@ -92,7 +87,7 @@ class Meeting {
         other.id == id &&
         other.start == start &&
         other.end == end &&
-        other.topic == topic &&
+        other.description == description &&
         other.location == location &&
         listEquals(other.members, members);
   }
@@ -103,7 +98,7 @@ class Meeting {
         id.hashCode ^
         start.hashCode ^
         end.hashCode ^
-        topic.hashCode ^
+        description.hashCode ^
         location.hashCode ^
         members.hashCode;
   }
