@@ -9,7 +9,7 @@ class CommunityPageController extends ChangeNotifier {
   CommunitiesDatabase database = CommunitiesDatabase.instance;
   List<Meeting> meetings;
   Community community;
-  List<Meeting>? myMeetings;
+  List<Meeting> myMeetings = [];
   String? myId;
   String? myName;
   bool loaded;
