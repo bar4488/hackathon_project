@@ -21,13 +21,7 @@ void main() async {
     cache: GraphQLCache(),
     link: _link,
   );
-  print("started running");
   CommunitiesDatabase.initialize(_link);
-  print(await CommunitiesDatabase.instance.getID());
-  Community c = await CommunitiesDatabase.instance.getCommunity(2665023500);
-  Meeting m = c.meetings[0];
-  CommunitiesDatabase.instance.createMeeting(2665023500, m);
-
   runApp(
     MyApp(
       link: _link,

@@ -22,6 +22,7 @@ class _ModalViewSessionState extends State<ModalViewSession> {
   Widget build(BuildContext context) {
     DateFormat f = DateFormat("EEE, M/d/y HH:mm");
     return SafeArea(
+      top: false,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -32,9 +33,9 @@ class _ModalViewSessionState extends State<ModalViewSession> {
             child: Text(
               widget.meeting.name,
               style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xff606060)),
             ),
           ),
           ListTile(
@@ -45,6 +46,31 @@ class _ModalViewSessionState extends State<ModalViewSession> {
           ),
           ListTile(
             title: Text("Location: ${widget.meeting.location ?? 'unknown'}"),
+          ),
+          Text(
+            "membres",
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: Color(0xff585858),
+            ),
+          ),
+          SizedBox(
+            height: 400,
+            child: ListView(
+              children: [
+                for (var member in widget.meeting.members)
+                  ListTile(
+                    leading: CircleAvatar(
+                      child: Icon(Icons.person),
+                      backgroundColor: Colors
+                          .primaries[member.hashCode % Colors.primaries.length],
+                      foregroundColor: Colors.white,
+                    ),
+                    title: Text(member),
+                  )
+              ],
+            ),
           ),
           Container(
             decoration: BoxDecoration(

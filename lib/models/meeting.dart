@@ -13,6 +13,8 @@ class Meeting {
   String? location;
   List<String> members = [];
 
+  Duration get duration => end.difference(start);
+
   Meeting({
     required this.name,
     this.id,

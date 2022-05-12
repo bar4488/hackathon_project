@@ -17,6 +17,8 @@ class CommunityMeeting {
   String? location;
   List<String> members = [];
 
+  Duration get duration => end.difference(start);
+
   CommunityMeeting({
     required this.community,
     required this.name,
