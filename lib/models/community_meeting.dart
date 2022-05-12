@@ -18,6 +18,9 @@ class CommunityMeeting {
   List<String> members = [];
 
   Duration get duration => end.difference(start);
+  bool get now =>
+      DateTime.now().compareTo(start) != -1 &&
+      DateTime.now().compareTo(end) != 1;
 
   CommunityMeeting({
     required this.community,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon_project/models/community.dart';
 import 'package:hackathon_project/models/meeting.dart';
+import 'package:hackathon_project/widgets/PeopleRow.dart';
 import 'package:intl/intl.dart';
 
 class CommunityCard extends StatelessWidget {
@@ -26,15 +27,33 @@ class CommunityCard extends StatelessWidget {
       child: InkWell(
         onTap: onPress,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              community.name!,
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
+            SizedBox(
+              width: 72,
+              height: 72,
+              child: FittedBox(
+                child: CircleAvatar(
+                  backgroundColor: Color(0xffE2FFA6),
+                  child: Icon(
+                    Icons.computer,
+                    color: Color(0xff828282),
+                  ),
+                ),
               ),
             ),
+            Expanded(
+              child: Text(
+                community.name!,
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            if (community.subscribers != null)
+              PeopleRow(people: community.subscribers!)
           ],
         ),
       ),
