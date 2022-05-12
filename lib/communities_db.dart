@@ -1,12 +1,17 @@
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:graphql/client.dart';
 
 
 
 
 class CommunitiesDatabase {
-  createCommunity(name, id )
-  {
+  CommunitiesDatabase(this.link);
+  Link link;
 
-  }
+
+
+
+
+
+
 
 }
