@@ -1,16 +1,18 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:collection/collection.dart';
 
 class Meeting {
   String name;
-  int? id;
+  String? id;
   DateTime start;
   DateTime end;
   String? description;
   String? location;
   List<String> members = [];
+
   Meeting({
     required this.name,
     this.id,
@@ -23,7 +25,7 @@ class Meeting {
 
   Meeting copyWith({
     String? name,
-    int? id,
+    String? id,
     DateTime? start,
     DateTime? end,
     String? description,
@@ -54,17 +56,19 @@ class Meeting {
   }
 
   factory Meeting.fromMap(Map<String, dynamic> map) {
+    print(map);
     return Meeting(
-        name: map['name'] as String,
-        id: map['id'] != null ? map['id'] as int : null,
-        start: DateTime.fromMillisecondsSinceEpoch(map['start'] as int),
-        end: DateTime.fromMillisecondsSinceEpoch(map['end'] as int),
-        description:
-            map['description'] != null ? map['description'] as String : null,
-        location: map['location'] != null ? map['location'] as String : null,
-        members: List<String>.from(
-          (map['members'] as List<String>),
-        ));
+      name: map['name'] as String,
+      id: map['id'],
+      //start: DateTime.fromMillisecondsSinceEpoch(map['start'] as int),
+      //end: DateTime.fromMillisecondsSinceEpoch(map['end'] as int),
+      start: DateTime.now(),
+      end: DateTime.now(),
+      description:
+          map['description'] != null ? map['description'] as String : null,
+      location: map['location'] != null ? map['location'] as String : null,
+      members: [],
+    );
   }
 
   String toJson() => json.encode(toMap());

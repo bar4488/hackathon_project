@@ -12,8 +12,7 @@ void main() async {
 
   final AuthLink authLink = AuthLink(
     getToken: () async =>
-        'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjE2MDI4NjU1MywidWlkIjozMDQzNTk0NCwiaWFkIjoiMjAyMi0wNS0xMlQxODowODowMy43NTlaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MTIxMzc2MzQsInJnbiI6InVzZTEifQ.vvmZgVYyVyDPjGBWyOFn58GWlPQ1TFR8KakCsu9RvZQ',
-  );
+     'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjE2MDI4NjU1MywidWlkIjozMDQzNTk0NCwiaWFkIjoiMjAyMi0wNS0xMlQxODowODowMy43NTlaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MTIxMzc2MzQsInJnbiI6InVzZTEifQ.vvmZgVYyVyDPjGBWyOFn58GWlPQ1TFR8KakCsu9RvZQ');
 
   Link _link = authLink.concat(httpLink);
 
