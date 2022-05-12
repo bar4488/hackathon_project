@@ -29,10 +29,6 @@ class CommunitiesDatabase {
   }
 
   Future<List<Community>> getAllCommunities() async {
-
-
-
-
     String GQLgetAllCommunities = r"""query 
     {
       boards {
@@ -56,30 +52,27 @@ class CommunitiesDatabase {
       print(result.exception.toString());
     }
 
-
     //print(result);
 
     final List<dynamic> allBoards = result.data?["boards"] as List<dynamic>;
     final List<dynamic> communities = [];
 
-    for (dynamic board in allBoards)
-      {
-        if (board["workspace_id"] == workspace_id)
-          {
-            communities.add(board);
-          }
+    for (dynamic board in allBoards) {
+      if (board["workspace_id"] == workspace_id) {
+        communities.add(board);
       }
-
+    }
 
     print(communities);
     print("^^^^^^ communities\n\n\n\n\n");
-    List<Community> coms = communities.map((e) => Community.fromMap(e as Map<String, dynamic>)).toList();
+    List<Community> coms = communities
+        .map((e) => Community.fromMap(e as Map<String, dynamic>))
+        .toList();
 
     print("here\n\n\n\n\n");
 
     //Community comm = makeCommunityFromParams(coms, result.data?["boards"]["workspace_id"], result.data?["boards"]["name"]);
     print(coms);
-
 
     return Future.delayed(
       Duration(milliseconds: 200),
