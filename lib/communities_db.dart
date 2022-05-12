@@ -19,7 +19,10 @@ class CommunitiesDatabase {
   Future<String> getJSONMeeting(Meeting meeting) async
   {
     String myID = await getID();
-    String res = "{\"person\":{\"personsAndTeams\":[\"" + myID + "\"]},\"\"";
+    String res = "{\"person\":{\"personsAndTeams\":[{\"id\":\"" + myID + "\",\"kind\":\"person\"}]}," +
+        "\"date4\":{\"date\":\""+ meeting.end.year.toString() + "-" + meeting.end.month.toString() + "-" + meeting.end.day.toString() + "\"}," +
+        "\"date\":{\"date\":\""+ meeting.start.year.toString() + "-" + meeting.start.month.toString() + "-" + meeting.start.day.toString() + "\"}, " +
+        "\"text:\":\"text\"}";
 
 
     return res;
@@ -79,7 +82,7 @@ class CommunitiesDatabase {
     print(result.data?["me"]["id"]);
 
 
-    return result.data?["me"]["id"];
+    return result.data!["me"]["id"].toString();
   }
 
   Future<GraphQLClient> getClient() async {
@@ -197,7 +200,7 @@ class CommunitiesDatabase {
   Future<Meeting> createMeeting(int communityId, Meeting meeting) async {
 
     String GQLcreateMeeting = r"""
-    mutation createMeeting($communityID: Int!, $name: String, $vals: String) {
+    mutation createMeeting($communityID: Int!, $name: String, $vals: JSON) {
       create_item (board_id: $communityID, item_name: $name, column_values: $vals) {
           id
        }
@@ -205,7 +208,7 @@ class CommunitiesDatabase {
     
     """;
 
-    String jason = meeting.toJson();
+    String jason = await getJSONMeeting(meeting);
     print(jason);
     print("jake ^^^ \n res ____");
     final MutationOptions options = MutationOptions(
