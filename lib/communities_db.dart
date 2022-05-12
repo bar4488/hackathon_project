@@ -7,6 +7,15 @@ class CommunitiesDatabase {
   Link? link;
 
   Future<List<Community>> getAllCommunities() {
+
+    String GQLgetAllCommunities = "";
+
+
+   
+
+
+
+
     return Future.delayed(
       Duration(milliseconds: 200),
       () {
