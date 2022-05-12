@@ -6,8 +6,8 @@ import 'package:collection/collection.dart';
 import 'meeting.dart';
 
 class Community {
-  String? name;
   int? id;
+  String? name;
   List<Meeting> meetings;
 
   Community({
