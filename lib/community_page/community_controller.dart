@@ -9,7 +9,9 @@ class CommunityPageController extends ChangeNotifier {
   CommunitiesDatabase database = CommunitiesDatabase.instance;
   List<Meeting> meetings;
   Community community;
+  List<Meeting>? myMeetings;
   String? myId;
+  String? myName;
   bool loaded;
 
   Future<Meeting> addMeeting(int communityId, Meeting meeting) async {
@@ -37,22 +39,38 @@ class CommunityPageController extends ChangeNotifier {
 
   Future<Meeting> addUserToMeeting(String communityId, Meeting meeting) async {
     Meeting newM = await database.joinMeeting(communityId, myId!, meeting);
-    //meetings = await getAllCommunityMeetings(int.parse(communityId));
-    meetings.add(meeting); // TODO: remove
+    meetings = await getAllCommunityMeetings(int.parse(communityId));
+    //meetings.add(meeting); // TODO: remove
     notifyListeners();
     return newM;
   }
 
   Future<Meeting> createMeeting(int communityId, Meeting meeting) async {
     Meeting newM = await database.createMeeting(communityId, meeting);
-    //meetings = await getAllCommunityMeetings(communityId);
-    meetings.add(meeting); // TODO: remove
+    meetings = await getAllCommunityMeetings(communityId);
+    //meetings.add(meeting); // TODO: remove
     notifyListeners();
     return newM;
   }
 
+  List<Meeting> getMyCommunityMeetings()
+  {
+    List<Meeting> myMeetings = [];
+    for(Meeting meeting in meetings)
+      {
+        if(meeting.members.contains(myName))
+        {
+          myMeetings.add(meeting);
+        }
+      }
+    return myMeetings;
+  }
+
+
   Future loadContent() async {
     myId = await database.getID();
+    myName = await database.getUsername();
+    myMeetings = getMyCommunityMeetings();
     loaded = true;
     notifyListeners();
   }
