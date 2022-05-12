@@ -23,9 +23,7 @@ class CommunitiesDatabase {
     );
   }
 
-
-  Community makeCommunityFromParams(String id, int workspace_id, String name)
-  {
+  Community makeCommunityFromParams(String id, int workspace_id, String name) {
     Community res = Community(name: name, id: int.parse(id), meetings: []);
     return res;
   }
@@ -34,7 +32,9 @@ class CommunitiesDatabase {
 
 
 
+
     String GQLgetAllCommunities = r"""query GQLgetAllCommunities($id_num : [Int] )
+
     {
       boards (ids: $id_num) {
         id
@@ -47,14 +47,9 @@ class CommunitiesDatabase {
       }
     }""";
 
-
     final QueryOptions options = QueryOptions(
       document: gql(GQLgetAllCommunities),
-
-      variables: <String, dynamic>{
-        'id_num': workspace_id
-      },
-
+      variables: <String, dynamic>{'id_num': workspace_id},
     );
     GraphQLClient client = await getClient();
     final QueryResult result = await client.query(options);
@@ -62,6 +57,7 @@ class CommunitiesDatabase {
     if (result.hasException) {
       print(result.exception.toString());
     }
+
 
     print(result);
 
@@ -75,6 +71,7 @@ class CommunitiesDatabase {
 
     //Community comm = makeCommunityFromParams(coms, result.data?["boards"]["workspace_id"], result.data?["boards"]["name"]);
     print(coms);
+
 
     return Future.delayed(
       Duration(milliseconds: 200),
