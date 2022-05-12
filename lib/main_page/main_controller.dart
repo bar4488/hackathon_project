@@ -23,7 +23,7 @@ class MainPageController extends ChangeNotifier {
     List<Meeting> meetings = [];
     for (Community community in communities) {
       List<Meeting> someMeetings =
-          await database.getCommunityMeetings(community.id!);
+          community.meetings;
       meetings.addAll(someMeetings);
     }
     return meetings;
