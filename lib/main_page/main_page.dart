@@ -6,6 +6,7 @@ import 'package:hackathon_project/main_page/widgets/CommunityCard.dart';
 import 'package:hackathon_project/main_page/widgets/NextMeetingCard.dart';
 import 'package:hackathon_project/models/community_meeting.dart';
 import 'package:hackathon_project/models/meeting.dart';
+import 'package:hackathon_project/subscribe_page/subscribe_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -63,8 +64,8 @@ class _MainPageState extends State<MainPage> {
                       alignment: Alignment.centerLeft,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               "Welcome Bar",
@@ -75,6 +76,16 @@ class _MainPageState extends State<MainPage> {
                                 color: Color(0xff595959),
                               ),
                             ),
+                            IconButton(
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: ((context) => SubscribePage()),
+                                  ),
+                                );
+                              },
+                              icon: Icon(Icons.add),
+                            )
                           ],
                         ),
                       ),

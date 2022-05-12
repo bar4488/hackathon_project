@@ -32,8 +32,13 @@ class _ModalViewSessionState extends State<ModalViewSession> {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.text_fields),
-            title: Text(f.format(widget.meeting.start)),
+            title: Text("Start date: ${f.format(widget.meeting.start)}"),
+          ),
+          ListTile(
+            title: Text("End date: ${f.format(widget.meeting.start)}"),
+          ),
+          ListTile(
+            title: Text("Location: ${widget.meeting.location ?? 'unknown'}"),
           ),
           Container(
             decoration: BoxDecoration(
