@@ -38,7 +38,7 @@ class CommunityPageController extends ChangeNotifier {
   {
     return await database.joinMeeting(communityId, myId!, meeting);
   }
-  
+
 
   Future loadContent() async {
     loaded = true;
