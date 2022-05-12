@@ -31,6 +31,7 @@ class MainPageController extends ChangeNotifier {
 
   Future loadContent() async {
     communities = await database.getAllCommunities(); // TODO: change to myCommunities
+    nextMeetings = await loadNextMeetings();
     loaded = true;
     notifyListeners();
   }
