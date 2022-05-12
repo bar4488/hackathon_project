@@ -116,7 +116,7 @@ class _CommunityPageState extends State<CommunityPage> {
                         child: buildCommunityMeetings(controller.meetings),
                       ),
                       SingleChildScrollView(
-                        child: buildCommunityMeetings(controller.meetings),
+                        child: buildCommunityMeetings(controller.myMeetings),
                       ),
                     ],
                   ),
@@ -137,6 +137,7 @@ class _CommunityPageState extends State<CommunityPage> {
             onTap: () {
               showModalBottomSheet(
                 context: context,
+                isScrollControlled: true,
                 builder: (context) => ModalAddSession(
                   controller: controller,
                 ),
@@ -179,6 +180,7 @@ class _CommunityPageState extends State<CommunityPage> {
               onPressed: () {
                 showModalBottomSheet(
                   context: context,
+                  isScrollControlled: true,
                   builder: (context) => ModalViewSession(
                     meeting: CommunityMeeting.fromMeeting(
                       controller.community,

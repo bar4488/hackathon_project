@@ -40,7 +40,6 @@ class CommunityPageController extends ChangeNotifier {
   Future<Meeting> addUserToMeeting(String communityId, Meeting meeting) async {
     Meeting newM = await database.joinMeeting(communityId, myId!, meeting);
     meetings = await getAllCommunityMeetings(int.parse(communityId));
-    //meetings.add(meeting); // TODO: remove
     notifyListeners();
     return newM;
   }
@@ -53,19 +52,15 @@ class CommunityPageController extends ChangeNotifier {
     return newM;
   }
 
-  List<Meeting> getMyCommunityMeetings()
-  {
+  List<Meeting> getMyCommunityMeetings() {
     List<Meeting> myMeetings = [];
-    for(Meeting meeting in meetings)
-      {
-        if(meeting.members.contains(myName))
-        {
-          myMeetings.add(meeting);
-        }
+    for (Meeting meeting in meetings) {
+      if (meeting.members.contains(myName)) {
+        myMeetings.add(meeting);
       }
+    }
     return myMeetings;
   }
-
 
   Future loadContent() async {
     myId = await database.getID();

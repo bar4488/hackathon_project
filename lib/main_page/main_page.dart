@@ -82,11 +82,7 @@ class _MainPageState extends State<MainPage> {
                               children: [
                                 IconButton(
                                   onPressed: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: ((context) => SubscribePage()),
-                                      ),
-                                    );
+                                    controller.loadContent();
                                   },
                                   icon: Icon(Icons.refresh),
                                 ),

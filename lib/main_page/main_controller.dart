@@ -38,6 +38,8 @@ class MainPageController extends ChangeNotifier {
   }
 
   Future loadContent() async {
+    loaded = false;
+    notifyListeners();
     communities = await database.getAllCommunities();
     nextMeetings = await loadNextMeetings();
     username = await database.getUsername();
