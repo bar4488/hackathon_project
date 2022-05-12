@@ -6,7 +6,7 @@ import 'package:hackathon_project/communities_db.dart';
 import 'package:hackathon_project/models/community.dart';
 
 class CommunityPageController extends ChangeNotifier {
-  CommunitiesMockDatabase database = CommunitiesMockDatabase.instance;
+  CommunitiesDatabase database = CommunitiesDatabase.instance;
   List<Meeting> meetings;
   Community community;
   bool loaded;
@@ -15,10 +15,17 @@ class CommunityPageController extends ChangeNotifier {
   {
     return await database.createMeeting(communityId, meeting);
   }
+
+  Future<Meeting> joinMeeting(Meeting meeting) async
+  {
+    meeting.members.add(await database.getUsername());
+    return await database.updateMeeting(meeting);
+  }
+
   Future<List<Meeting>> getAllCommunityMeetings(int communityId) async
   {
-    return await database.getCommunityMeetings(communityId);
-  }
+    return (await database.getCommunity(communityId)).meetings;
+  } // TODO: maybe there is no need to pull this from the server every time
 
   CommunityPageController(this.community)
       : loaded = false,
