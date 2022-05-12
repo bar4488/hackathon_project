@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_project/communities_db.dart';
 import 'package:hackathon_project/main_page/main_page.dart';
 import 'package:graphql/client.dart';
+import 'package:hackathon_project/models/community.dart';
+import 'package:hackathon_project/models/meeting.dart';
 
 void main() async {
   final httpLink = HttpLink(

@@ -14,6 +14,7 @@ class ModalViewSession extends StatefulWidget {
 class _ModalViewSessionState extends State<ModalViewSession> {
   @override
   Widget build(BuildContext context) {
+    DateFormat f = DateFormat("EEE, M/d/y HH:mm");
     return SafeArea(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -32,7 +33,7 @@ class _ModalViewSessionState extends State<ModalViewSession> {
           ),
           ListTile(
             leading: Icon(Icons.text_fields),
-            title: Text(widget.meeting.name),
+            title: Text(f.format(widget.meeting.start)),
           ),
           Container(
             decoration: BoxDecoration(
@@ -52,8 +53,10 @@ class _ModalViewSessionState extends State<ModalViewSession> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              onPressed: () {},
-              child: Text("Create!"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Join!"),
             ),
           )
         ],
