@@ -330,4 +330,41 @@ class CommunitiesDatabase {
 
   }
 
+  Future<Meeting> joinMeeting(String Community_ID, String userID, Meeting meeting) async {
+    String GQLcreateMeeting = r"""
+    mutation createMeeting($communityID: Int!, $name: String, $vals: JSON) {
+      create_item (board_id: $communityID, item_name: $name, column_values: $vals) {
+          id
+       }
+    }
+    
+    """;
+
+    String jason = await getJSONMeeting(meeting);
+    print(jason);
+    print("jake ^^^ \n res ____");
+    final MutationOptions options = MutationOptions(
+      document: gql(GQLcreateMeeting),
+      variables: <String, dynamic>{
+        'communityID': Community_ID,
+        'name': meeting.name,
+      },
+    );
+
+    final QueryResult? result = await client?.mutate(options);
+    if (result != null) {
+      if (result.hasException) {
+        print(result.exception.toString());
+      }
+    }
+    print(result);
+    print("added!!!");
+    return Future.delayed(
+      Duration(milliseconds: 200),
+          () {
+        return Future.value(meeting);
+      },
+    );
+  }
+
 }
