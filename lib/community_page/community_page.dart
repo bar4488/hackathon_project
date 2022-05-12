@@ -133,13 +133,13 @@ class _CommunityPageState extends State<CommunityPage> {
   }
 
   Widget buildMeetingRow(meeting) {
-    return Center();
-  }
-
-  Widget buildNextMeating(Meeting meeting) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: NextMeetingCards(meeting: meeting),
+    return Container(
+      color: Colors.white,
+      child: Column(
+        children: [
+          Text("meeting"),
+        ],
+      ),
     );
   }
 }
