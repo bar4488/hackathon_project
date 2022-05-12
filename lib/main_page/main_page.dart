@@ -57,32 +57,48 @@ class _MainPageState extends State<MainPage> {
             child: Column(
               children: [
                 SizedBox(
-                    height: 150,
-                    child: SafeArea(
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Welcome Bar",
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                  fontSize: 26,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xff595959),
-                                ),
+                  height: 140,
+                  child: SafeArea(
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Welcome Bar",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontSize: 26,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xff595959),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-                    )),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Next meetings",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xff595959),
+                      ),
+                    ),
+                  ),
+                ),
                 SizedBox(
-                  height: 180,
+                  height: 200,
                   child: ListView(
+                    padding: EdgeInsets.only(left: 8),
                     physics: BouncingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     children: [

@@ -3,17 +3,16 @@ import 'package:hackathon_project/models/community_meeting.dart';
 import 'package:hackathon_project/models/meeting.dart';
 import 'package:intl/intl.dart';
 
-class NextMeetingCards extends StatelessWidget {
-  const NextMeetingCards({Key? key, required this.meeting}) : super(key: key);
+class MeetingCard extends StatelessWidget {
+  const MeetingCard({Key? key, required this.meeting}) : super(key: key);
 
-  final CommunityMeeting meeting;
+  final Meeting meeting;
 
   @override
   Widget build(BuildContext context) {
     var f = DateFormat.yMEd();
     var f2 = DateFormat.jm();
     return Container(
-      width: 250,
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
           color: Colors.white,
@@ -33,7 +32,7 @@ class NextMeetingCards extends StatelessWidget {
           ),
           Center(
             child: Text(
-              meeting.community.name!,
+              meeting.topic ?? "no description",
               textAlign: TextAlign.center,
               style: TextStyle(fontWeight: FontWeight.w200, fontSize: 18),
             ),

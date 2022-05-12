@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon_project/communities_db.dart';
+import 'package:hackathon_project/community_page/community_controller.dart';
+import 'package:hackathon_project/community_page/widgets/MeetingCard.dart';
 import 'package:hackathon_project/main_page/main_controller.dart';
 import 'package:hackathon_project/main_page/widgets/CommunityCard.dart';
 import 'package:hackathon_project/main_page/widgets/NextMeetingCard.dart';
@@ -15,7 +17,7 @@ class CommunityPage extends StatefulWidget {
 }
 
 class _CommunityPageState extends State<CommunityPage> {
-  late MainPageController controller;
+  late CommunityPageController controller;
 
   List<Meeting> nextMeatings = [
     Meeting(
@@ -28,7 +30,7 @@ class _CommunityPageState extends State<CommunityPage> {
 
   @override
   void initState() {
-    controller = MainPageController();
+    controller = CommunityPageController(widget.community);
     controller.addListener(() => setState(() {}));
     super.initState();
   }
@@ -108,12 +110,10 @@ class _CommunityPageState extends State<CommunityPage> {
                   child: TabBarView(
                     children: [
                       SingleChildScrollView(
-                        child: SizedBox(
-                          height: 200,
-                        ),
+                        child: buildCommunityMeetings(controller.meetings),
                       ),
-                      SizedBox(
-                        height: 200,
+                      SingleChildScrollView(
+                        child: buildCommunityMeetings(controller.meetings),
                       ),
                     ],
                   ),
@@ -128,18 +128,13 @@ class _CommunityPageState extends State<CommunityPage> {
 
   Widget buildCommunityMeetings(List<Meeting> meetings) {
     return Column(
-      children: [for (var meeting in meetings) buildMeetingRow(meeting)],
-    );
-  }
-
-  Widget buildMeetingRow(meeting) {
-    return Container(
-      color: Colors.white,
-      child: Column(
-        children: [
-          Text("meeting"),
-        ],
-      ),
+      children: [
+        for (var meeting in meetings)
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: MeetingCard(meeting: meeting),
+          )
+      ],
     );
   }
 }
