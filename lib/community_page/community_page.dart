@@ -3,11 +3,13 @@ import 'package:hackathon_project/communities_db.dart';
 import 'package:hackathon_project/main_page/main_controller.dart';
 import 'package:hackathon_project/main_page/widgets/CommunityCard.dart';
 import 'package:hackathon_project/main_page/widgets/NextMeetingCard.dart';
+import 'package:hackathon_project/models/community.dart';
 import 'package:hackathon_project/models/meeting.dart';
 
 class CommunityPage extends StatefulWidget {
-  const CommunityPage({Key? key}) : super(key: key);
+  const CommunityPage({Key? key, required this.community}) : super(key: key);
 
+  final Community community;
   @override
   State<CommunityPage> createState() => _CommunityPageState();
 }
@@ -58,6 +60,18 @@ class _CommunityPageState extends State<CommunityPage> {
                 ),
               ),
             ],
+          ),
+          Positioned(
+            left: 8,
+            top: 8,
+            child: SafeArea(
+              child: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: Icon(Icons.arrow_back),
+              ),
+            ),
           ),
         ],
       ),

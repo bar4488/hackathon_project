@@ -4,9 +4,11 @@ import 'package:hackathon_project/models/meeting.dart';
 import 'package:intl/intl.dart';
 
 class CommunityCard extends StatelessWidget {
-  const CommunityCard({Key? key, required this.community}) : super(key: key);
+  const CommunityCard({Key? key, required this.community, this.onPress})
+      : super(key: key);
 
   final Community community;
+  final void Function()? onPress;
 
   @override
   Widget build(BuildContext context) {
@@ -21,17 +23,20 @@ class CommunityCard extends StatelessWidget {
           boxShadow: [
             BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10)
           ]),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            community.name!,
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
+      child: InkWell(
+        onTap: onPress,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              community.name!,
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon_project/communities_db.dart';
+import 'package:hackathon_project/community_page/community_page.dart';
 import 'package:hackathon_project/main_page/main_controller.dart';
 import 'package:hackathon_project/main_page/widgets/CommunityCard.dart';
 import 'package:hackathon_project/main_page/widgets/NextMeetingCard.dart';
@@ -121,7 +122,16 @@ class _MainPageState extends State<MainPage> {
                   crossAxisCount: 2,
                   children: [
                     for (var community in controller.communities)
-                      CommunityCard(community: community)
+                      CommunityCard(
+                        community: community,
+                        onPress: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CommunityPage(
+                              community: community,
+                            ),
+                          ));
+                        },
+                      )
                   ],
                 )
               ],
