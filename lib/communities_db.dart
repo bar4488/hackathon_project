@@ -16,6 +16,10 @@ class CommunitiesDatabase {
 
   final int workspace_id = 1513929;
 
+  Future<String> getUsername() async {
+    return "Harel"; // TODO: change this :)
+  }
+
   Future<GraphQLClient> getClient() async {
     /// initialize Hive and wrap the default box in a HiveStore
     return GraphQLClient(
