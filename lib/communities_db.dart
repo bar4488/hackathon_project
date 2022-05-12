@@ -103,7 +103,7 @@ class CommunitiesDatabase {
     final MutationOptions options = MutationOptions(
       document: gql(GQLcreateMeeting),
       variables: <String, dynamic>{
-        'starrableId': repositoryID,
+        'starrableId': 1,
       },
     );
 
