@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-import 'dart:developer';
+import 'package:intl/intl.dart';
 
 import 'package:collection/collection.dart';
 
@@ -56,18 +56,21 @@ class Meeting {
   }
 
   factory Meeting.fromMap(Map<String, dynamic> map) {
-    print(map);
+    var columnValues = map["column_values"] as List<dynamic>;
+    var members = columnValues[0]["text"] as String;
+    var start = columnValues[1]["text"] as String;
+    var end = columnValues[2]["text"] as String;
+    var description = columnValues[3]["text"] as String;
+    var location = columnValues[4]["text"] as String;
+    var f = DateFormat("yyyy-MM-dd hh:mm");
     return Meeting(
       name: map['name'] as String,
       id: map['id'],
-      //start: DateTime.fromMillisecondsSinceEpoch(map['start'] as int),
-      //end: DateTime.fromMillisecondsSinceEpoch(map['end'] as int),
-      start: DateTime.now(),
-      end: DateTime.now(),
-      description:
-          map['description'] != null ? map['description'] as String : null,
-      location: map['location'] != null ? map['location'] as String : null,
-      members: [],
+      start: start.isEmpty ? DateTime.now() : f.parse(start),
+      end: end.isEmpty ? DateTime.now() : f.parse(end),
+      members: members.split(", "),
+      description: description,
+      location: location,
     );
   }
 

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:hackathon_project/community_page/community_controller.dart';
+import 'package:hackathon_project/models/meeting.dart';
 import 'package:intl/intl.dart';
 
 class ModalAddSession extends StatefulWidget {
-  const ModalAddSession({Key? key}) : super(key: key);
+  const ModalAddSession({Key? key, required this.controller}) : super(key: key);
+
+  final CommunityPageController controller;
 
   @override
   State<ModalAddSession> createState() => _ModalAddSessionState();
@@ -18,6 +22,7 @@ class _ModalAddSessionState extends State<ModalAddSession> {
 
   @override
   Widget build(BuildContext context) {
+    var f = DateFormat('yyyy.MM.dd hh:mm');
     return SafeArea(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -45,8 +50,7 @@ class _ModalAddSessionState extends State<ModalAddSession> {
                 );
 
                 if (pickedDate != null) {
-                  String formattedDate =
-                      DateFormat('yyyy.MM.dd hh:mm').format(pickedDate);
+                  String formattedDate = f.format(pickedDate);
                   setState(() {
                     startController.text = formattedDate;
                   });
@@ -70,8 +74,7 @@ class _ModalAddSessionState extends State<ModalAddSession> {
                 );
 
                 if (pickedDate != null) {
-                  String formattedDate =
-                      DateFormat('yyyy.MM.dd hh:mm').format(pickedDate);
+                  String formattedDate = f.format(pickedDate);
                   setState(() {
                     endController.text = formattedDate;
                   });
@@ -109,7 +112,25 @@ class _ModalAddSessionState extends State<ModalAddSession> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () async {
+                if (nameController.text.isNotEmpty &&
+                    startController.text.isNotEmpty &&
+                    endController.text.isNotEmpty) {
+                  await widget.controller.createMeeting(
+                    int.parse(widget.controller.community.id!),
+                    Meeting(
+                      name: nameController.text,
+                      start: f.parse(startController.text),
+                      end: f.parse(endController.text),
+                      location: locationController.text.isEmpty
+                          ? null
+                          : locationController.text,
+                      members: ["me"],
+                    ),
+                  );
+                  Navigator.of(context).pop();
+                }
+              },
               child: Text("Create!"),
             ),
           )

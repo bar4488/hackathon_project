@@ -24,12 +24,14 @@ class NextMeetingCards extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            meeting.name,
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 2,
-            textAlign: TextAlign.center,
+          Center(
+            child: Text(
+              meeting.name,
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              textAlign: TextAlign.center,
+            ),
           ),
           Center(
             child: Text(
@@ -38,20 +40,70 @@ class NextMeetingCards extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.w200, fontSize: 18),
             ),
           ),
-          Row(
-            children: [
-              Icon(Icons.place),
-              Text(meeting.location ?? "no location"),
-            ],
+          Center(
+            child: Text(
+              f.format(meeting.start),
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.w200, fontSize: 18),
+            ),
           ),
-          Row(
-            children: [
-              Icon(Icons.person),
-              Text(meeting.members.length.toString())
-            ],
+          Center(
+            child: Text(
+              f2.format(meeting.start),
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.w200, fontSize: 18),
+            ),
           ),
-          Text(f.format(meeting.start)),
-          Text(f2.format(meeting.start)),
+          Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.place_outlined),
+                Text(
+                  meeting.location ?? "no location",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w200,
+                    fontSize: 18,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Positioned(
+                  width: 60,
+                  left: 0,
+                  child: CircleAvatar(
+                    child: Icon(Icons.person),
+                  ),
+                ),
+                Positioned(
+                  left: 30,
+                  width: 60,
+                  child: CircleAvatar(
+                    child: Icon(Icons.person),
+                  ),
+                ),
+                Positioned(
+                  left: 60,
+                  width: 60,
+                  child: CircleAvatar(
+                    child: Icon(Icons.person),
+                  ),
+                ),
+                Positioned(
+                  left: 90,
+                  width: 60,
+                  child: CircleAvatar(
+                    child: Icon(Icons.person),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

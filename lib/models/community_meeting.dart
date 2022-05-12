@@ -10,10 +10,10 @@ import 'package:hackathon_project/models/meeting.dart';
 class CommunityMeeting {
   Community community;
   String name;
-  int? id;
+  String? id;
   DateTime start;
   DateTime end;
-  String? topic;
+  String? description;
   String? location;
   List<String> members = [];
 
@@ -23,19 +23,21 @@ class CommunityMeeting {
     this.id,
     required this.start,
     required this.end,
-    this.topic,
+    this.description,
     this.location,
     required this.members,
   });
 
   static CommunityMeeting fromMeeting(Community community, Meeting meeting) {
     return CommunityMeeting(
-      community: community,
-      name: meeting.name,
-      start: meeting.start,
-      end: meeting.end,
-      members: meeting.members,
-    );
+        community: community,
+        name: meeting.name,
+        start: meeting.start,
+        end: meeting.end,
+        members: meeting.members,
+        id: meeting.id,
+        location: meeting.location,
+        description: meeting.description);
   }
 
   Meeting toMeeting() {
@@ -44,13 +46,16 @@ class CommunityMeeting {
       start: start,
       end: end,
       members: members,
+      description: description,
+      id: id,
+      location: location,
     );
   }
 
   CommunityMeeting copyWith({
     Community? community,
     String? name,
-    int? id,
+    String? id,
     DateTime? start,
     DateTime? end,
     String? topic,
@@ -63,7 +68,7 @@ class CommunityMeeting {
       id: id ?? this.id,
       start: start ?? this.start,
       end: end ?? this.end,
-      topic: topic ?? this.topic,
+      description: topic ?? this.description,
       location: location ?? this.location,
       members: members ?? this.members,
     );
@@ -76,7 +81,7 @@ class CommunityMeeting {
       'id': id,
       'start': start.millisecondsSinceEpoch,
       'end': end.millisecondsSinceEpoch,
-      'topic': topic,
+      'topic': description,
       'location': location,
       'members': members,
     };
@@ -86,10 +91,10 @@ class CommunityMeeting {
     return CommunityMeeting(
       community: Community.fromMap(map['community'] as Map<String, dynamic>),
       name: map['name'] as String,
-      id: map['id'] != null ? map['id'] as int : null,
+      id: map['id'],
       start: DateTime.fromMillisecondsSinceEpoch(map['start'] as int),
       end: DateTime.fromMillisecondsSinceEpoch(map['end'] as int),
-      topic: map['topic'] != null ? map['topic'] as String : null,
+      description: map['topic'] != null ? map['topic'] as String : null,
       location: map['location'] != null ? map['location'] as String : null,
       members: List<String>.from(
         (map['members'] as List<String>),
@@ -104,7 +109,7 @@ class CommunityMeeting {
 
   @override
   String toString() {
-    return 'CommunityMeeting(community: $community, name: $name, id: $id, start: $start, end: $end, topic: $topic, location: $location, members: $members)';
+    return 'CommunityMeeting(community: $community, name: $name, id: $id, start: $start, end: $end, topic: $description, location: $location, members: $members)';
   }
 
   @override
@@ -117,7 +122,7 @@ class CommunityMeeting {
         other.id == id &&
         other.start == start &&
         other.end == end &&
-        other.topic == topic &&
+        other.description == description &&
         other.location == location &&
         listEquals(other.members, members);
   }
@@ -129,7 +134,7 @@ class CommunityMeeting {
         id.hashCode ^
         start.hashCode ^
         end.hashCode ^
-        topic.hashCode ^
+        description.hashCode ^
         location.hashCode ^
         members.hashCode;
   }
