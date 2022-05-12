@@ -16,8 +16,70 @@ class CommunitiesDatabase {
 
   final int workspace_id = 1513929;
 
+  Future<String> getJSONMeeting(Meeting meeting) async
+  {
+    String myID = await getID();
+    String res = "{\"person\":{\"personsAndTeams\":[\"" + myID + "\"]},\"\"";
+
+
+    return res;
+  }
+
+
   Future<String> getUsername() async {
-    return "Harel"; // TODO: change this :)
+    String GQLgetUserName = r"""query {
+       me {
+          name
+          id
+        }
+      }""";
+
+
+    final QueryOptions options = QueryOptions(
+      document: gql(GQLgetUserName),
+      variables: <String, dynamic>{
+      },
+    );
+    GraphQLClient client = await getClient();
+    final QueryResult result = await client.query(options);
+    if (result.hasException) {
+      print(result.exception.toString());
+    }
+
+    print(result);
+
+    print(result.data?["me"]["name"]);
+
+
+    return result.data?["me"]["name"];
+  }
+
+  Future<String> getID() async {
+    String GQLgetUserName = r"""query {
+       me {
+          name
+          id
+        }
+      }""";
+
+
+    final QueryOptions options = QueryOptions(
+      document: gql(GQLgetUserName),
+      variables: <String, dynamic>{
+      },
+    );
+    GraphQLClient client = await getClient();
+    final QueryResult result = await client.query(options);
+    if (result.hasException) {
+      print(result.exception.toString());
+    }
+
+    print(result);
+
+    print(result.data?["me"]["id"]);
+
+
+    return result.data?["me"]["id"];
   }
 
   Future<GraphQLClient> getClient() async {
@@ -183,8 +245,8 @@ class CommunitiesDatabase {
   Future<Meeting> createMeeting(int communityId, Meeting meeting) async {
 
     String GQLcreateMeeting = r"""
-    mutation createMeeting($communityID: Int!, $name: String) {
-      create_item (board_id: $communityID, item_name: $name) {
+    mutation createMeeting($communityID: Int!, $name: String, $vals: String) {
+      create_item (board_id: $communityID, item_name: $name, column_values: $vals) {
           id
        }
     }

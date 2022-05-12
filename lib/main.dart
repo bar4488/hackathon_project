@@ -23,15 +23,7 @@ void main() async {
     link: _link,
   );
   print("started running");
-  await CommunitiesDatabase.initialize(_link);
-  Meeting m = Meeting(
-        name: "fake_meeting",
-        start: DateTime.now().subtract(Duration(days: 1)),
-        end: DateTime.now().subtract(Duration(hours: 23)),
-        topic: "victory",
-        members: []);
-  CommunitiesDatabase.instance.createMeeting(2665023500, m);
-  print("init completed");
+  CommunitiesDatabase.initialize(_link);
   runApp(
     MyApp(
       link: _link,

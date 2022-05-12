@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_project/communities_db.dart';
 import 'package:hackathon_project/community_page/community_controller.dart';
 import 'package:hackathon_project/community_page/widgets/MeetingCard.dart';
+import 'package:hackathon_project/community_page/widgets/ModalAddSession.dart';
+import 'package:hackathon_project/community_page/widgets/ModalViewSession.dart';
 import 'package:hackathon_project/main_page/main_controller.dart';
 import 'package:hackathon_project/main_page/widgets/CommunityCard.dart';
 import 'package:hackathon_project/main_page/widgets/NextMeetingCard.dart';
 import 'package:hackathon_project/models/community.dart';
+import 'package:hackathon_project/models/community_meeting.dart';
 import 'package:hackathon_project/models/meeting.dart';
 
 class CommunityPage extends StatefulWidget {
@@ -123,6 +126,41 @@ class _CommunityPageState extends State<CommunityPage> {
           ],
         ),
       ),
+      floatingActionButton: Material(
+        elevation: 10,
+        borderRadius: BorderRadius.circular(27),
+        child: SizedBox(
+          height: 56,
+          width: 180,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(27),
+            onTap: () {
+              showModalBottomSheet(
+                  context: context, builder: (context) => ModalAddSession());
+            },
+            child: Ink(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(27),
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xffFF9518),
+                    Color(0xffFF4D4D),
+                  ],
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  "Add Meeting!",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -132,7 +170,20 @@ class _CommunityPageState extends State<CommunityPage> {
         for (var meeting in meetings)
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: MeetingCard(meeting: meeting),
+            child: MeetingCard(
+              meeting: meeting,
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) => ModalViewSession(
+                    meeting: CommunityMeeting.fromMeeting(
+                      widget.community,
+                      meeting,
+                    ),
+                  ),
+                );
+              },
+            ),
           )
       ],
     );
