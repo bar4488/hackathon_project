@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:graphql/client.dart';
 import 'package:hackathon_project/models/community.dart';
 import 'package:hackathon_project/models/meeting.dart';
+import 'package:intl/intl.dart';
 
 class CommunitiesDatabase {
   static late CommunitiesDatabase instance;
@@ -18,25 +21,25 @@ class CommunitiesDatabase {
   final int workspace_id = 1513929;
 
   Future<String> getJSONMeeting(Meeting meeting) async {
+    DateFormat date_format = DateFormat("YYYY-MM-DD");
+    DateFormat time_format = DateFormat("HH:mm:ss");
+
     String myID = await getID();
-    String res = "{\"person\":{\"personsAndTeams\":[{\"id\":\"" +
-        myID +
-        "\",\"kind\":\"person\"}]}," +
-        "\"date4\":{\"date\":\"" +
-        meeting.end.year.toString() +
-        "-" +
-        meeting.end.month.toString() +
-        "-" +
-        meeting.end.day.toString() +
-        "\"}," +
-        "\"date\":{\"date\":\"" +
-        meeting.start.year.toString() +
-        "-" +
-        meeting.start.month.toString() +
-        "-" +
-        meeting.start.day.toString() +
-        "\"}, " +
-        "\"text:\":\"text\"}";
+    String res = json.encode({
+      "person": {
+        "personsAndTeams": [
+          {"id": myID, "kind": "person"}
+        ]
+      },
+      "date": {
+        "date": date_format.format(meeting.start),
+        "time": time_format.format(meeting.start)
+      },
+      "date4": {
+        "date": date_format.format(meeting.end),
+        "time": time_format.format(meeting.end)
+      },
+    });
 
     return res;
   }
@@ -275,6 +278,7 @@ class CommunitiesDatabase {
       variables: <String, dynamic>{
         'communityID': communityId,
         'name': meeting.name,
+        'column_values': jason
       },
     );
 

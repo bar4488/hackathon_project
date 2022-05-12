@@ -177,9 +177,10 @@ class _CommunityPageState extends State<CommunityPage> {
                   context: context,
                   builder: (context) => ModalViewSession(
                     meeting: CommunityMeeting.fromMeeting(
-                      widget.community,
+                      controller.community,
                       meeting,
                     ),
+                    controller: controller,
                   ),
                 );
               },

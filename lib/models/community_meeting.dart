@@ -38,6 +38,15 @@ class CommunityMeeting {
     );
   }
 
+  Meeting toMeeting() {
+    return Meeting(
+      name: name,
+      start: start,
+      end: end,
+      members: members,
+    );
+  }
+
   CommunityMeeting copyWith({
     Community? community,
     String? name,
