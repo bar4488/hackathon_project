@@ -21,20 +21,21 @@ class MainPageController extends ChangeNotifier {
   }
 
   Future<List<CommunityMeeting>> loadNextMeetings() async {
-    List<Community> communities = await database.getAllCommunities();
     List<CommunityMeeting> meetings = [];
     for (Community community in communities) {
       List<Meeting> someMeetings = community.meetings;
       for (Meeting meeting in someMeetings) {
-        meetings.add(CommunityMeeting(
-            community: community,
-            name: meeting.name,
-            start: meeting.start,
-            end: meeting.end,
-            members: meeting.members));
+        if(DateTime.now().add(Duration(minutes: 30)).compareTo(meeting.start) != -1 && DateTime.now().compareTo(meeting.end) != 1) {
+          meetings.add(CommunityMeeting(
+              community: community,
+              name: meeting.name,
+              start: meeting.start,
+              end: meeting.end,
+              members: meeting.members));
+        }
       }
     }
-    return meetings;
+    return meetings.reversed.toList();
   }
 
   Future loadContent() async {

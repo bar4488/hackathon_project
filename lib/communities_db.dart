@@ -45,7 +45,8 @@ class CommunitiesDatabase {
   }
 
   Future<String> getUsername() async {
-    String GQLgetUserName = r"""query {
+    String GQLgetUserName =
+        r"""query {
        me {
           name
           id
@@ -61,16 +62,13 @@ class CommunitiesDatabase {
     if (result.hasException) {
       print(result.exception.toString());
     }
-
-    //print(result);
-
-    print(result.data?["me"]["name"]);
 
     return result.data?["me"]["name"];
   }
 
   Future<String> getID() async {
-    String GQLgetUserName = r"""query {
+    String GQLgetUserName =
+        r"""query {
        me {
           name
           id
@@ -86,10 +84,6 @@ class CommunitiesDatabase {
     if (result.hasException) {
       print(result.exception.toString());
     }
-
-    //print(result);
-
-    print(result.data?["me"]["id"]);
 
     return result.data!["me"]["id"].toString();
   }
@@ -109,7 +103,8 @@ class CommunitiesDatabase {
   }
 
   Future<List<Community>> getAllCommunities() async {
-    String GQLgetAllCommunities = r"""query 
+    String GQLgetAllCommunities =
+        r"""query 
     {
       boards (limit: 100, board_kind: private){
         id
@@ -134,8 +129,6 @@ class CommunitiesDatabase {
       print(result.exception.toString());
     }
 
-    //print(result);
-
     final List<dynamic> allBoards = result.data?["boards"] as List<dynamic>;
     final List<dynamic> communities = [];
 
@@ -149,12 +142,12 @@ class CommunitiesDatabase {
         .map((e) => Community.fromMap(e as Map<String, dynamic>))
         .toList();
     //Community comm = makeCommunityFromParams(coms, result.data?["boards"]["workspace_id"], result.data?["boards"]["name"]);
-    print(coms);
     return coms;
   }
 
   Future<List<Community>> getMyBoards(int communityId) async {
-    String GQLgetCommunity = r"""query getBoards
+    String GQLgetCommunity =
+        r"""query getBoards
     {
       boards{
         id
@@ -182,8 +175,6 @@ class CommunitiesDatabase {
       print(result.exception.toString());
     }
 
-    //print(result);
-
     final List<dynamic> communities = result.data?["boards"] as List<dynamic>;
 
     List<Community> coms = communities
@@ -198,13 +189,12 @@ class CommunitiesDatabase {
         myCommunities.add(community);
       }
     }
-    print("my comms!");
-    print(myCommunities);
     return myCommunities;
   }
 
   Future<Community> getCommunity(int communityId) async {
-    String GQLgetCommunity = r"""query getCommunity ($com_id: [Int])
+    String GQLgetCommunity =
+        r"""query getCommunity ($com_id: [Int])
     {
       boards (ids: $com_id ){
         id
@@ -232,21 +222,19 @@ class CommunitiesDatabase {
       print(result.exception.toString());
     }
 
-    //print(result);
-
     final List<dynamic> communities = result.data?["boards"] as List<dynamic>;
 
     List<Community> coms = communities
         .map((e) => Community.fromMap(e as Map<String, dynamic>))
         .toList();
     //Community comm = makeCommunityFromParams(coms, result.data?["boards"]["workspace_id"], result.data?["boards"]["name"]);
-    print(coms);
 
     return coms[0];
   }
 
   Future<Meeting> createMeeting(int communityId, Meeting meeting) async {
-    String GQLcreateMeeting = r"""
+    String GQLcreateMeeting =
+        r"""
     mutation createMeeting($communityID: Int!, $name: String) {
       create_item (board_id: $communityID, item_name: $name) {
           id
@@ -263,33 +251,26 @@ class CommunitiesDatabase {
     );
 
     final QueryResult? result = await client?.mutate(options);
-    print("worked^^^");
     if (result != null) {
       if (result.hasException) {
         print(result.exception.toString());
       }
     }
 
-    print(result?.data);
-    print(result!.data!["create_item"]["id"]);
-    print("that was cool!\n\n\n");
     Community c = await getCommunity(communityId);
     Meeting? goodm = null;
     List<Meeting> ms = c.meetings;
-    for (Meeting m in ms){
-      if (m.id == result.data!["create_item"]["id"])
-        {
-          goodm = m;
-        }
+    for (Meeting m in ms) {
+      if (m.id == result!.data!["create_item"]["id"]) {
+        goodm = m;
+      }
     }
     if (goodm != null) {
-      print(goodm.end);
       this.joinMeeting(communityId.toString(), await getID(), goodm);
       this.addEndTime(communityId.toString(), goodm.end, goodm);
       this.addStartTime(communityId.toString(), goodm.start, goodm);
     }
     return meeting;
-
   }
 
   Future<Meeting> updateMeeting(Meeting meeting) async {
@@ -299,7 +280,8 @@ class CommunitiesDatabase {
   Future addCommunityUser(
       String Community_ID, String userID) async // TODO: work?
   {
-    String GQLcreateMeeting = r"""
+    String GQLcreateMeeting =
+        r"""
     mutation addUser($communityID: Int!, $user: Int!) {
       add_subscribers_to_board (board_id: $communityID, user_ids: [$user], kind:owner) {
           id
@@ -319,13 +301,12 @@ class CommunitiesDatabase {
         print(result.exception.toString());
       }
     }
-    //print(result);
-    //print("added!!!");
   }
 
   Future<Meeting> joinMeeting(
       String Community_ID, String userID, Meeting meeting) async {
-    String GQLjoinMeeting = r"""
+    String GQLjoinMeeting =
+        r"""
     mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: JSON!) {
       change_column_value (board_id: $communityID, item_id: $meetingID, column_id: "person", value: $vals) {
           id
@@ -339,8 +320,6 @@ class CommunitiesDatabase {
       jason += '{"id":' + member + ',"kind":"person"},';
     }
     jason += '{"id":' + userID + ',"kind":"person"}]}';
-    print(jason);
-    print("jake ^^^ \n res ____");
     final MutationOptions options = MutationOptions(
       document: gql(GQLjoinMeeting),
       variables: <String, dynamic>{
@@ -358,12 +337,12 @@ class CommunitiesDatabase {
     }
 
     return meeting;
-
   }
 
   Future<Meeting> addEndTime(
       String Community_ID, DateTime dateTime, Meeting meeting) async {
-    String GQLjoinMeeting = r"""
+    String GQLjoinMeeting =
+        r"""
     mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: JSON!) {
       change_column_value (board_id: $communityID, item_id: $meetingID, column_id: "date", value: $vals) {
           id
@@ -373,9 +352,11 @@ class CommunitiesDatabase {
     """;
     DateFormat dateFormat = DateFormat("yyyy-MM-dd");
     DateFormat timeFormat = DateFormat("HH:mm:ss");
-    String jason = '{"date":"'+dateFormat.format(dateTime)+'","time":"'+timeFormat.format(dateTime)+'"}';
-    print(jason);
-    print("jake ^^^ \n res ____");
+    String jason = '{"date":"' +
+        dateFormat.format(dateTime) +
+        '","time":"' +
+        timeFormat.format(dateTime) +
+        '"}';
     final MutationOptions options = MutationOptions(
       document: gql(GQLjoinMeeting),
       variables: <String, dynamic>{
@@ -391,11 +372,9 @@ class CommunitiesDatabase {
         print(result.exception.toString());
       }
     }
-    //print(result);
-    //print("added!!!");
     return Future.delayed(
       Duration(milliseconds: 200),
-          () {
+      () {
         return Future.value(meeting);
       },
     );
@@ -403,7 +382,8 @@ class CommunitiesDatabase {
 
   Future<Meeting> addStartTime(
       String Community_ID, DateTime dateTime, Meeting meeting) async {
-    String GQLjoinMeeting = r"""
+    String GQLjoinMeeting =
+        r"""
     mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: JSON!) {
       change_column_value (board_id: $communityID, item_id: $meetingID, column_id: "date4", value: $vals) {
           id
@@ -413,9 +393,12 @@ class CommunitiesDatabase {
     """;
     DateFormat dateFormat = DateFormat("yyyy-MM-dd");
     DateFormat timeFormat = DateFormat("HH:mm:ss");
-    String jason = '{"date":"'+dateFormat.format(dateTime)+'","time":"'+timeFormat.format(dateTime)+'"}';
-    print(jason);
-    print("jake ^^^ \n res ____");
+    String jason = '{"date":"' +
+        dateFormat.format(dateTime) +
+        '","time":"' +
+        timeFormat.format(dateTime) +
+        '"}';
+
     final MutationOptions options = MutationOptions(
       document: gql(GQLjoinMeeting),
       variables: <String, dynamic>{
@@ -431,14 +414,12 @@ class CommunitiesDatabase {
         print(result.exception.toString());
       }
     }
-    //print(result);
-    print("added!!!");
+
     return Future.delayed(
       Duration(milliseconds: 200),
-          () {
+      () {
         return Future.value(meeting);
       },
     );
   }
-
 }
