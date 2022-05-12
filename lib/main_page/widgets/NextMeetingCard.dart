@@ -9,7 +9,7 @@ class NextMeetingCards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 220,
+      width: 230,
       decoration: BoxDecoration(
         color: Colors.red,
         borderRadius: BorderRadius.circular(20),

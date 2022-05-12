@@ -15,7 +15,9 @@ class _MainPageState extends State<MainPage> {
   late MainPageController controller;
   CommunitiesDatabase db = CommunitiesDatabase();
 
-  List<Meeting> nextMeatings = [];
+  List<Meeting> nextMeatings = [
+    Meeting(name: "abc", start: DateTime.now(), end: DateTime.now())
+  ];
 
   @override
   void initState() {
