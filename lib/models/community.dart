@@ -9,6 +9,7 @@ class Community {
   int? id;
   String? name;
   List<Meeting> meetings;
+  List<String> subscribers;
 
   Community({
     this.name,

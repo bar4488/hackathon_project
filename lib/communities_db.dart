@@ -163,6 +163,7 @@ class CommunitiesDatabase {
         }
       }
     }""";
+    String myId = await getID();
 
     final QueryOptions options = QueryOptions(
       document: gql(GQLgetCommunity),
@@ -183,8 +184,9 @@ class CommunitiesDatabase {
         .map((e) => Community.fromMap(e as Map<String, dynamic>))
         .toList();
     //Community comm = makeCommunityFromParams(coms, result.data?["boards"]["workspace_id"], result.data?["boards"]["name"]);
-    print(coms);
-
+    List<Community> myCommunity = [];
+    for(Community community in coms)
+      if()
     return Future.delayed(
       Duration(milliseconds: 200),
           () {
