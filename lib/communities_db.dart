@@ -63,14 +63,9 @@ class CommunitiesDatabase {
       }
     }
 
-    print(communities);
-    print("^^^^^^ communities\n\n\n\n\n");
     List<Community> coms = communities
         .map((e) => Community.fromMap(e as Map<String, dynamic>))
         .toList();
-
-    print("here\n\n\n\n\n");
-
     //Community comm = makeCommunityFromParams(coms, result.data?["boards"]["workspace_id"], result.data?["boards"]["name"]);
     print(coms);
 
@@ -78,11 +73,7 @@ class CommunitiesDatabase {
       Duration(milliseconds: 200),
       () {
         return Future.value(
-          [
-            coms[0],
-            Community(meetings: [], name: "test2"),
-            Community(meetings: [], name: "test3"),
-          ],
+          coms,
         );
       },
     );
@@ -106,6 +97,16 @@ class CommunitiesDatabase {
   }
 
   Future<Meeting> createMeeting(int communityId, Meeting meeting) {
+
+    String GQLcreateMeeting = r"""""";
+
+    final MutationOptions options = MutationOptions(
+      document: gql(GQLcreateMeeting),
+      variables: <String, dynamic>{
+        'starrableId': repositoryID,
+      },
+    );
+
     return Future.delayed(
       Duration(milliseconds: 200),
       () {
