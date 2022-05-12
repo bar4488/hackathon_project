@@ -17,8 +17,73 @@ class CommunitiesDatabase {
 
   final int workspace_id = 1513929;
 
+  Future<String> getJSONMeeting(Meeting meeting) async
+  {
+    String myID = await getID();
+    String res = "{\"person\":{\"personsAndTeams\":[{\"id\":\"" + myID + "\",\"kind\":\"person\"}]}," +
+        "\"date4\":{\"date\":\""+ meeting.end.year.toString() + "-" + meeting.end.month.toString() + "-" + meeting.end.day.toString() + "\"}," +
+        "\"date\":{\"date\":\""+ meeting.start.year.toString() + "-" + meeting.start.month.toString() + "-" + meeting.start.day.toString() + "\"}, " +
+        "\"text:\":\"text\"}";
+
+
+    return res;
+  }
+
+
   Future<String> getUsername() async {
-    return "Harel"; // TODO: change this :)
+    String GQLgetUserName = r"""query {
+       me {
+          name
+          id
+        }
+      }""";
+
+
+    final QueryOptions options = QueryOptions(
+      document: gql(GQLgetUserName),
+      variables: <String, dynamic>{
+      },
+    );
+    GraphQLClient client = await getClient();
+    final QueryResult result = await client.query(options);
+    if (result.hasException) {
+      print(result.exception.toString());
+    }
+
+    print(result);
+
+    print(result.data?["me"]["name"]);
+
+
+    return result.data?["me"]["name"];
+  }
+
+  Future<String> getID() async {
+    String GQLgetUserName = r"""query {
+       me {
+          name
+          id
+        }
+      }""";
+
+
+    final QueryOptions options = QueryOptions(
+      document: gql(GQLgetUserName),
+      variables: <String, dynamic>{
+      },
+    );
+    GraphQLClient client = await getClient();
+    final QueryResult result = await client.query(options);
+    if (result.hasException) {
+      print(result.exception.toString());
+    }
+
+    print(result);
+
+    print(result.data?["me"]["id"]);
+
+
+    return result.data!["me"]["id"].toString();
   }
 
   Future<GraphQLClient> getClient() async {
@@ -134,15 +199,15 @@ class CommunitiesDatabase {
 
   Future<Meeting> createMeeting(int communityId, Meeting meeting) async {
     String GQLcreateMeeting = r"""
-    mutation createMeeting($communityID: Int!, $name: String) {
-      create_item (board_id: $communityID, item_name: $name) {
+    mutation createMeeting($communityID: Int!, $name: String, $vals: JSON) {
+      create_item (board_id: $communityID, item_name: $name, column_values: $vals) {
           id
        }
     }
     
     """;
 
-    String jason = meeting.toJson();
+    String jason = await getJSONMeeting(meeting);
     print(jason);
     print("jake ^^^ \n res ____");
     final MutationOptions options = MutationOptions(
