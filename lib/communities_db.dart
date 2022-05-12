@@ -3,7 +3,14 @@ import 'package:hackathon_project/models/community.dart';
 import 'package:hackathon_project/models/meeting.dart';
 
 class CommunitiesDatabase {
-  CommunitiesDatabase(this.link);
+  static late CommunitiesDatabase instance;
+
+  CommunitiesDatabase._internal(this.link);
+
+  static void initialize(Link link) {
+    instance = CommunitiesDatabase._internal(link);
+  }
+
   Link link;
   final int workspace_id = 2663479462;
 
@@ -11,11 +18,12 @@ class CommunitiesDatabase {
     /// initialize Hive and wrap the default box in a HiveStore
     final store = await HiveStore.open(path: 'my/cache/path');
     return GraphQLClient(
-    /// pass the store to the cache for persistence
-    cache: GraphQLCache(store: store),
-    link: link,
+      /// pass the store to the cache for persistence
+      cache: GraphQLCache(store: store),
+      link: link,
     );
   }
+
 
   Community makeCommunityFromParams(String id, int workspace_id, String name)
   {
@@ -37,9 +45,11 @@ class CommunitiesDatabase {
 
     final QueryOptions options = QueryOptions(
       document: gql(GQLgetAllCommunities),
+
       variables: <String, dynamic>{
         'id_num': workspace_id
       },
+
     );
     GraphQLClient client = await getClient();
     final QueryResult result = await client.query(options);
@@ -48,10 +58,12 @@ class CommunitiesDatabase {
       print(result.exception.toString());
     }
 
+
     final List<dynamic> communities =
     result.data?["boards"]["workspace_id"] as List<dynamic>;
     print(communities);
     Community comm = makeCommunityFromParams(result.data?["boards"]["id"], result.data?["boards"]["workspace_id"], result.data?["boards"]["name"]);
+
 
     return Future.delayed(
       Duration(milliseconds: 200),

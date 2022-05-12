@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon_project/communities_db.dart';
 import 'package:hackathon_project/main_page/main_controller.dart';
+import 'package:hackathon_project/main_page/widgets/NextMeetingCard.dart';
+import 'package:hackathon_project/models/meeting.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -11,11 +14,18 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   late MainPageController controller;
 
-  List<String> nextMeatings = ["A", "B", "C"];
+  List<Meeting> nextMeatings = [
+    Meeting(
+      name: "abc",
+      start: DateTime.now(),
+      end: DateTime.now(),
+      members: [],
+    )
+  ];
 
   @override
   void initState() {
-    controller = MainPageController();
+    controller = MainPageController(CommunitiesDatabase());
     controller.addListener(() => setState(() {}));
     super.initState();
   }
@@ -117,16 +127,10 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Widget buildNextMeating(String meating) {
+  Widget buildNextMeating(Meeting meeting) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(
-        width: 220,
-        decoration: BoxDecoration(
-          color: Colors.red,
-          borderRadius: BorderRadius.circular(20),
-        ),
-      ),
+      child: NextMeetingCards(meeting: meeting),
     );
   }
 }
