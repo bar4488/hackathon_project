@@ -374,6 +374,34 @@ class CommunitiesDatabase {
     return subs;
   }
 
+  Future<int> getIdFromName(String name) async {
+    String GQLgetUsers =
+        r"""query {
+       users {
+          name
+          id
+        }
+      }""";
+
+    final QueryOptions options = QueryOptions(
+      document: gql(GQLgetUsers),
+      variables: <String, dynamic>{},
+    );
+    GraphQLClient client = await getClient();
+    final QueryResult result = await client.query(options);
+    if (result.hasException) {
+      print(result.exception.toString());
+    }
+
+    for (dynamic user in result.data?['users']) {
+      if (user['name'] == name) {
+        return user['id'];
+      }
+    }
+
+    return 0;
+  }
+
   Future<Meeting> addEndTime(
       String Community_ID, DateTime dateTime, Meeting meeting) async {
     String GQLjoinMeeting =
@@ -457,11 +485,4 @@ class CommunitiesDatabase {
       },
     );
   }
-
-
- 
-
-
-
-
 }
