@@ -262,27 +262,23 @@ class CommunitiesDatabase {
 
   Future<Meeting> createMeeting(int communityId, Meeting meeting) async {
     String GQLcreateMeeting = r"""
-    mutation createMeeting($communityID: Int!, $name: String, $vals: JSON) {
-      create_item (board_id: $communityID, item_name: $name, column_values: $vals) {
+    mutation createMeeting($communityID: Int!, $name: String) {
+      create_item (board_id: $communityID, item_name: $name) {
           id
        }
     }
-    
     """;
 
-    String jason = await getJSONMeeting(meeting);
-    print(jason);
-    print("jake ^^^ \n res ____");
-    final MutationOptions options = MutationOptions(
+    MutationOptions options = MutationOptions(
       document: gql(GQLcreateMeeting),
       variables: <String, dynamic>{
         'communityID': communityId,
         'name': meeting.name,
-        'column_values': jason
       },
     );
 
     final QueryResult? result = await client?.mutate(options);
+    print("worked^^^");
     if (result != null) {
       if (result.hasException) {
         print(result.exception.toString());
@@ -290,6 +286,24 @@ class CommunitiesDatabase {
     }
     print(result);
     print("added!!!");
+    print(result?.data);
+    print(result!.data!["create_item"]["id"]);
+    print("that was cool!\n\n\n");
+    Community c = await getCommunity(communityId);
+    Meeting? goodm = null;
+    List<Meeting> ms = c.meetings;
+    for (Meeting m in ms){
+      if (m.id == result.data!["create_item"]["id"])
+        {
+          goodm = m;
+        }
+    }
+    if (goodm != null) {
+      print(goodm.end);
+      this.joinMeeting(communityId.toString(), await getID(), goodm);
+      this.addEndTime(communityId.toString(), goodm.end, goodm);
+      this.addStartTime(communityId.toString(), goodm.start, goodm);
+    }
     return Future.delayed(
       Duration(milliseconds: 200),
       () {
@@ -336,7 +350,7 @@ class CommunitiesDatabase {
 
   Future<Meeting> joinMeeting(
       String Community_ID, String userID, Meeting meeting) async {
-    String GQLcreateMeeting = r"""
+    String GQLjoinMeeting = r"""
     mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: JSON!) {
       change_column_value (board_id: $communityID, item_id: $meetingID, column_id: "person", value: $vals) {
           id
@@ -354,7 +368,7 @@ class CommunitiesDatabase {
     print(jason);
     print("jake ^^^ \n res ____");
     final MutationOptions options = MutationOptions(
-      document: gql(GQLcreateMeeting),
+      document: gql(GQLjoinMeeting),
       variables: <String, dynamic>{
         'communityID': int.parse(Community_ID),
         'meetingID': int.tryParse(meeting.id!),
@@ -377,4 +391,85 @@ class CommunitiesDatabase {
       },
     );
   }
+
+  Future<Meeting> addEndTime(
+      String Community_ID, DateTime dateTime, Meeting meeting) async {
+    String GQLjoinMeeting = r"""
+    mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: JSON!) {
+      change_column_value (board_id: $communityID, item_id: $meetingID, column_id: "date", value: $vals) {
+          id
+       }
+    }
+    
+    """;
+    DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+    DateFormat timeFormat = DateFormat("HH:mm:ss");
+    String jason = '{"date":"'+dateFormat.format(dateTime)+'","time":"'+timeFormat.format(dateTime)+'"}';
+    print(jason);
+    print("jake ^^^ \n res ____");
+    final MutationOptions options = MutationOptions(
+      document: gql(GQLjoinMeeting),
+      variables: <String, dynamic>{
+        'communityID': int.parse(Community_ID),
+        'meetingID': int.tryParse(meeting.id!),
+        'vals': jason
+      },
+    );
+
+    final QueryResult? result = await client?.mutate(options);
+    if (result != null) {
+      if (result.hasException) {
+        print(result.exception.toString());
+      }
+    }
+    print(result);
+    print("added!!!");
+    return Future.delayed(
+      Duration(milliseconds: 200),
+          () {
+        return Future.value(meeting);
+      },
+    );
+  }
+
+  Future<Meeting> addStartTime(
+      String Community_ID, DateTime dateTime, Meeting meeting) async {
+    String GQLjoinMeeting = r"""
+    mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: JSON!) {
+      change_column_value (board_id: $communityID, item_id: $meetingID, column_id: "date4", value: $vals) {
+          id
+       }
+    }
+    
+    """;
+    DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+    DateFormat timeFormat = DateFormat("HH:mm:ss");
+    String jason = '{"date":"'+dateFormat.format(dateTime)+'","time":"'+timeFormat.format(dateTime)+'"}';
+    print(jason);
+    print("jake ^^^ \n res ____");
+    final MutationOptions options = MutationOptions(
+      document: gql(GQLjoinMeeting),
+      variables: <String, dynamic>{
+        'communityID': int.parse(Community_ID),
+        'meetingID': int.tryParse(meeting.id!),
+        'vals': jason
+      },
+    );
+
+    final QueryResult? result = await client?.mutate(options);
+    if (result != null) {
+      if (result.hasException) {
+        print(result.exception.toString());
+      }
+    }
+    print(result);
+    print("added!!!");
+    return Future.delayed(
+      Duration(milliseconds: 200),
+          () {
+        return Future.value(meeting);
+      },
+    );
+  }
+
 }
