@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon_project/models/community_meeting.dart';
 import 'package:hackathon_project/models/meeting.dart';
 import 'package:intl/intl.dart';
 
 class NextMeetingCards extends StatelessWidget {
   const NextMeetingCards({Key? key, required this.meeting}) : super(key: key);
 
-  final Meeting meeting;
+  final CommunityMeeting meeting;
 
   @override
   Widget build(BuildContext context) {

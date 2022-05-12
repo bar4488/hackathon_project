@@ -4,6 +4,7 @@ import 'package:hackathon_project/community_page/community_page.dart';
 import 'package:hackathon_project/main_page/main_controller.dart';
 import 'package:hackathon_project/main_page/widgets/CommunityCard.dart';
 import 'package:hackathon_project/main_page/widgets/NextMeetingCard.dart';
+import 'package:hackathon_project/models/community_meeting.dart';
 import 'package:hackathon_project/models/meeting.dart';
 
 class MainPage extends StatefulWidget {
@@ -133,7 +134,7 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Widget buildNextMeating(Meeting meeting) {
+  Widget buildNextMeating(CommunityMeeting meeting) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: NextMeetingCards(meeting: meeting),
