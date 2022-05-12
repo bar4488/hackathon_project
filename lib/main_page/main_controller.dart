@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hackathon_project/communities_db_mock.dart';
 import 'package:hackathon_project/models/community_meeting.dart';
 import 'package:hackathon_project/models/meeting.dart';
 import 'package:hackathon_project/communities_db.dart';
@@ -50,6 +49,11 @@ class MainPageController extends ChangeNotifier {
     loaded = false;
     notifyListeners();
     communities = await database.getAllCommunities();
+    for(var com in communities)
+    {
+      com.subscribers = await getSubscribersForCommunity(int.parse(com.id!));
+    }
+    print(communities);
     nextMeetings = await loadNextMeetings();
     username = await database.getUsername();
     loaded = true;

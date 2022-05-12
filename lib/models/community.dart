@@ -4,15 +4,13 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
-import 'package:hackathon_project/models/Subscriber.dart';
-
 import 'meeting.dart';
 
 class Community {
   String? id;
   String? name;
   List<Meeting> meetings;
-  List<Subscriber>? subscribers;
+  List<String>? subscribers;
 
   Community({
     this.id,
@@ -25,7 +23,7 @@ class Community {
     String? id,
     String? name,
     List<Meeting>? meetings,
-    List<Subscriber>? subscribers,
+    List<String>? subscribers,
   }) {
     return Community(
       id: id ?? this.id,
@@ -40,7 +38,6 @@ class Community {
       'id': id,
       'name': name,
       'items': meetings.map((x) => x.toMap()).toList(),
-      'subscribers': subscribers?.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -55,13 +52,6 @@ class Community {
               ),
             )
           : [],
-      subscribers: map['subscribers'] != null
-          ? List<Subscriber>.from(
-              (map['subscribers'] as List<dynamic>).map<Subscriber?>(
-                (x) => Subscriber.fromMap(x as Map<String, dynamic>),
-              ),
-            )
-          : null,
     );
   }
 
