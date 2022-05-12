@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon_project/communities_db.dart';
 import 'package:hackathon_project/main_page/main_page.dart';
 import 'package:graphql/client.dart';
 
@@ -14,12 +15,13 @@ void main() async {
 
   Link _link = authLink.concat(httpLink);
 
-
   final GraphQLClient client = GraphQLClient(
     /// **NOTE** The default store is the InMemoryStore, which does NOT persist to disk
     cache: GraphQLCache(),
     link: _link,
   );
+
+  CommunitiesDatabase.initialize(_link);
 
   runApp(
     MyApp(
@@ -36,13 +38,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.green,
-        ),
-        home: const MainPage(),
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+      ),
+      home: const MainPage(),
     );
   }
 }
