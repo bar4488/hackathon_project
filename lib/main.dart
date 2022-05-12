@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_project/communities_db.dart';
 import 'package:hackathon_project/main_page/main_page.dart';
 import 'package:graphql/client.dart';
+import 'package:hackathon_project/models/community.dart';
+import 'package:hackathon_project/models/meeting.dart';
 
 void main() async {
   final httpLink = HttpLink(
@@ -21,9 +23,14 @@ void main() async {
     link: _link,
   );
   print("started running");
-  CommunitiesDatabase.initialize(_link);
-
-  CommunitiesDatabase.instance.getCommunity(2664574677);
+  await CommunitiesDatabase.initialize(_link);
+  Meeting m = Meeting(
+        name: "fake_meeting",
+        start: DateTime.now().subtract(Duration(days: 1)),
+        end: DateTime.now().subtract(Duration(hours: 23)),
+        topic: "victory",
+        members: []);
+  CommunitiesDatabase.instance.createMeeting(2665023500, m);
   print("init completed");
   runApp(
     MyApp(

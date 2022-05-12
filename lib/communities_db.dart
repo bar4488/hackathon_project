@@ -7,7 +7,7 @@ class CommunitiesDatabase {
 
   CommunitiesDatabase._internal(this.link);
 
-  static void initialize(Link link) async {
+  static Future initialize(Link link) async {
     instance = CommunitiesDatabase._internal(link);
     instance.client = await instance.getClient();
   }
@@ -130,25 +130,34 @@ class CommunitiesDatabase {
 
   Future<Meeting> createMeeting(int communityId, Meeting meeting) async {
 
-    String GQLcreateMeeting = r"""""";
+    String GQLcreateMeeting = r"""
+    mutation createMeeting($communityID: Int!, $name: String) {
+      create_item (board_id: $communityID, item_name: $name) {
+          id
+       }
+    }
+    
+    """;
 
-
-
+    String jason = meeting.toJson();
+    print(jason);
+    print("jake ^^^ \n res ____");
     final MutationOptions options = MutationOptions(
       document: gql(GQLcreateMeeting),
       variables: <String, dynamic>{
-        'starrableId': 1,
+        'communityID': communityId,
+        'name': meeting.name,
       },
     );
-
+    print(client == null);
     final QueryResult? result = await client?.mutate(options);
     if (result != null ){
       if (result.hasException) {
         print(result.exception.toString());
       }
     }
-
-
+    print(result);
+    print("added!!!");
     return Future.delayed(
       Duration(milliseconds: 200),
       () {
