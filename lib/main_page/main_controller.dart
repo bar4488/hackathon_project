@@ -31,13 +31,7 @@ class MainPageController extends ChangeNotifier {
                 -1 &&
             DateTime.now().compareTo(meeting.end) != 1) {
           meetings.add(
-            CommunityMeeting(
-              community: community,
-              name: meeting.name,
-              start: meeting.start,
-              end: meeting.end,
-              members: meeting.members,
-            ),
+            CommunityMeeting.fromMeeting(community, meeting),
           );
         }
       }
