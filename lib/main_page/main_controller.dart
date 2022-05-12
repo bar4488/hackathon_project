@@ -10,6 +10,7 @@ class MainPageController extends ChangeNotifier {
 
   List<CommunityMeeting> nextMeetings;
   List<Community> communities;
+  late String username;
   bool loaded;
 
   MainPageController()
@@ -23,21 +24,24 @@ class MainPageController extends ChangeNotifier {
     List<Community> communities = await database.getAllCommunities();
     List<CommunityMeeting> meetings = [];
     for (Community community in communities) {
-      List<Meeting> someMeetings =
-          community.meetings;
-      for(Meeting meeting in someMeetings)
-        {
-          meetings.add(CommunityMeeting(community: community, name: meeting.name, start: meeting.start, end: meeting.end, members: meeting.members));
-        }
+      List<Meeting> someMeetings = community.meetings;
+      for (Meeting meeting in someMeetings) {
+        meetings.add(CommunityMeeting(
+            community: community,
+            name: meeting.name,
+            start: meeting.start,
+            end: meeting.end,
+            members: meeting.members));
+      }
     }
     return meetings;
   }
 
   Future loadContent() async {
-    communities = await database.getAllCommunities(); // TODO: change to myCommunities
+    communities = await database.getAllCommunities();
     nextMeetings = await loadNextMeetings();
+    username = await database.getUsername();
     loaded = true;
     notifyListeners();
   }
-
 }
