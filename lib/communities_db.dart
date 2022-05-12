@@ -321,7 +321,7 @@ class CommunitiesDatabase {
 
     String jason = '{"personsAndTeams":[';
     for (String member in meeting.members) {
-      jason += '{"id":' + member + ',"kind":"person"},';
+      jason += '{"id":' + getIdFromName(member).toString() + ',"kind":"person"},';
     }
     jason += '{"id":' + userID + ',"kind":"person"}]}';
     final MutationOptions options = MutationOptions(
