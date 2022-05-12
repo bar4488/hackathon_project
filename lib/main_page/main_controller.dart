@@ -50,6 +50,8 @@ class MainPageController extends ChangeNotifier {
     loaded = false;
     notifyListeners();
     communities = await database.getAllCommunities();
+    for(var com in communities)
+      com.subscribers = await getSubscribersForCommunity(com.id);
     nextMeetings = await loadNextMeetings();
     username = await database.getUsername();
     loaded = true;
