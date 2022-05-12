@@ -114,7 +114,7 @@ class CommunitiesDatabase {
     String GQLgetAllCommunities =
         r"""query 
     {
-      boards (limit: 200){
+      boards (limit: 100, board_kind: private){
         id
         workspace_id
         name
@@ -130,7 +130,6 @@ class CommunitiesDatabase {
     );
     GraphQLClient client = await getClient();
     final QueryResult result = await client.query(options);
-    print("hello world!!!");
     if (result.hasException) {
       print(result.exception.toString());
     }
@@ -157,6 +156,63 @@ class CommunitiesDatabase {
       () {
         return Future.value(
           coms,
+        );
+      },
+    );
+  }
+
+  Future<List<Community>> getMyBoards(int communityId) async {
+    String GQLgetCommunity =
+        r"""query getBoards
+    {
+      boards{
+        subscribers{
+        id
+        }
+        id
+        workspace_id
+        name
+        items{
+          id
+          name
+        }
+      }
+    }""";
+    String myId = await getID();
+
+    final QueryOptions options = QueryOptions(
+      document: gql(GQLgetCommunity),
+      variables: <String, dynamic>{},
+    );
+    GraphQLClient client = await getClient();
+    final QueryResult result = await client.query(options);
+    if (result.hasException) {
+      print(result.exception.toString());
+    }
+
+    //print(result);
+
+    final List<dynamic> communities = result.data?["boards"] as List<dynamic>;
+
+    List<Community> coms = communities
+        .map((e) => Community.fromMap(e as Map<String, dynamic>))
+        .toList();
+    //Community comm = makeCommunityFromParams(coms, result.data?["boards"]["workspace_id"], result.data?["boards"]["name"]);
+    List<Community> myCommunities = [];
+    for (Community community in coms) {
+      if (community.subscribers != null &&
+          community.subscribers!.contains(myId) &&
+          !myCommunities.contains(community)) {
+        myCommunities.add(community);
+      }
+    }
+    print("my comms!");
+    print(myCommunities);
+    return Future.delayed(
+      Duration(milliseconds: 200),
+      () {
+        return Future.value(
+          myCommunities,
         );
       },
     );
@@ -249,6 +305,73 @@ class CommunitiesDatabase {
   }
 
   Future<Meeting> updateMeeting(Meeting meeting) {
+    return Future.delayed(
+      Duration(milliseconds: 200),
+      () {
+        return Future.value(meeting);
+      },
+    );
+  }
+
+  Future addCommunityUser(
+      String Community_ID, String userID) async // TODO: work?
+  {
+    String GQLcreateMeeting =
+        r"""
+    mutation addUser($communityID: Int!, $user: Int!) {
+      add_subscribers_to_board (board_id: $communityID, user_ids: [$user], kind:owner) {
+          id
+       }
+    }
+    
+    """;
+
+    final MutationOptions options = MutationOptions(
+      document: gql(GQLcreateMeeting),
+      variables: <String, dynamic>{'communityID': Community_ID, 'user': userID},
+    );
+
+    final QueryResult? result = await client?.mutate(options);
+    if (result != null) {
+      if (result.hasException) {
+        print(result.exception.toString());
+      }
+    }
+    print(result);
+    print("added!!!");
+  }
+
+  Future<Meeting> joinMeeting(
+      String Community_ID, String userID, Meeting meeting) async {
+    String GQLcreateMeeting =
+        r"""
+    mutation createMeeting($communityID: Int!, $name: String, $vals: JSON) {
+      create_item (board_id: $communityID, item_name: $name, column_values: $vals) {
+          id
+       }
+    }
+    
+    """;
+
+    String jason = await getJSONMeeting(meeting);
+    print(jason);
+    print("jake ^^^ \n res ____");
+    final MutationOptions options = MutationOptions(
+      document: gql(GQLcreateMeeting),
+      variables: <String, dynamic>{
+        'communityID': Community_ID,
+        'name': meeting.name,
+      },
+    );
+
+    final QueryResult? result = await client?.mutate(options);
+    if (result != null) {
+      if (result.hasException) {
+        print(result.exception.toString());
+      }
+    }
+    print(result);
+    print("added!!!");
     return Future.delayed(
       Duration(milliseconds: 200),
       () {

@@ -9,6 +9,7 @@ class CommunityPageController extends ChangeNotifier {
   CommunitiesDatabase database = CommunitiesDatabase.instance;
   List<Meeting> meetings;
   Community community;
+  String? myId;
   bool loaded;
 
   Future<Meeting> addMeeting(int communityId, Meeting meeting) async
@@ -33,8 +34,15 @@ class CommunityPageController extends ChangeNotifier {
     loadContent();
   }
 
+  Future<Meeting> addUserToMeeting(String communityId, Meeting meeting) async
+  {
+    return await database.joinMeeting(communityId, myId!, meeting);
+  }
+
+
   Future loadContent() async {
     loaded = true;
+    myId = await database.getID();
     notifyListeners();
   }
 }
