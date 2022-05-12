@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hackathon_project/communities_db.dart';
 import 'package:hackathon_project/community_page/community_page.dart';
 import 'package:hackathon_project/main_page/main_controller.dart';
 import 'package:hackathon_project/main_page/widgets/CommunityCard.dart';
 import 'package:hackathon_project/main_page/widgets/NextMeetingCard.dart';
 import 'package:hackathon_project/models/community_meeting.dart';
-import 'package:hackathon_project/models/meeting.dart';
 import 'package:hackathon_project/subscribe_page/subscribe_page.dart';
 
 class MainPage extends StatefulWidget {
@@ -73,6 +71,7 @@ class _MainPageState extends State<MainPage> {
                                   : "Loading...",
                               textAlign: TextAlign.start,
                               style: TextStyle(
+                                overflow: TextOverflow.ellipsis,
                                 fontSize: 26,
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xff595959),

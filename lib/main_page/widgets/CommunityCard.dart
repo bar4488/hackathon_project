@@ -53,7 +53,10 @@ class CommunityCard extends StatelessWidget {
               ),
             ),
             if (community.subscribers != null)
-              PeopleRow(people: community.subscribers!)
+              SizedBox(
+                height: 60,
+                child: PeopleRow(people: community.subscribers!),
+              )
           ],
         ),
       ),
