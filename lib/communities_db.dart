@@ -298,4 +298,36 @@ class CommunitiesDatabase {
       },
     );
   }
+
+  Future addCommunityUser(String Community_ID, String userID) async
+  {
+    String GQLcreateMeeting = r"""
+    mutation addUser($communityID: Int!, $user: Int!) {
+      add_subscribers_to_board (board_id: $communityID, user_ids: [$user], kind:owner) {
+          id
+       }
+    }
+    
+    """;
+
+
+    final MutationOptions options = MutationOptions(
+      document: gql(GQLcreateMeeting),
+      variables: <String, dynamic>{
+        'communityID': Community_ID,
+        'user': userID
+      },
+    );
+
+    final QueryResult? result = await client?.mutate(options);
+    if (result != null ){
+      if (result.hasException) {
+        print(result.exception.toString());
+      }
+    }
+    print(result);
+    print("added!!!");
+
+  }
+
 }
