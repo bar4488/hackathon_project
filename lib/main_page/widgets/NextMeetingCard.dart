@@ -58,7 +58,10 @@ class NextMeetingCards extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.place_outlined),
+                Icon(
+                  Icons.place_outlined,
+                  color: Color(0xff585858),
+                ),
                 Text(
                   meeting.location ?? "no location",
                   style: TextStyle(
