@@ -5,7 +5,7 @@ import 'package:hackathon_project/communities_db.dart';
 import 'package:hackathon_project/models/community.dart';
 
 class MainPageController extends ChangeNotifier {
-  CommunitiesMockDatabase database = CommunitiesMockDatabase.instance;
+  CommunitiesDatabase database = CommunitiesDatabase.instance;
 
   List<Meeting> nextMeetings;
   List<Community> communities;
@@ -34,4 +34,5 @@ class MainPageController extends ChangeNotifier {
     loaded = true;
     notifyListeners();
   }
+
 }
