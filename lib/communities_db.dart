@@ -17,18 +17,29 @@ class CommunitiesDatabase {
 
   final int workspace_id = 1513929;
 
-  Future<String> getJSONMeeting(Meeting meeting) async
-  {
+  Future<String> getJSONMeeting(Meeting meeting) async {
     String myID = await getID();
-    String res = "{\"person\":{\"personsAndTeams\":[{\"id\":\"" + myID + "\",\"kind\":\"person\"}]}," +
-        "\"date4\":{\"date\":\""+ meeting.end.year.toString() + "-" + meeting.end.month.toString() + "-" + meeting.end.day.toString() + "\"}," +
-        "\"date\":{\"date\":\""+ meeting.start.year.toString() + "-" + meeting.start.month.toString() + "-" + meeting.start.day.toString() + "\"}, " +
+    String res = "{\"person\":{\"personsAndTeams\":[{\"id\":\"" +
+        myID +
+        "\",\"kind\":\"person\"}]}," +
+        "\"date4\":{\"date\":\"" +
+        meeting.end.year.toString() +
+        "-" +
+        meeting.end.month.toString() +
+        "-" +
+        meeting.end.day.toString() +
+        "\"}," +
+        "\"date\":{\"date\":\"" +
+        meeting.start.year.toString() +
+        "-" +
+        meeting.start.month.toString() +
+        "-" +
+        meeting.start.day.toString() +
+        "\"}, " +
         "\"text:\":\"text\"}";
-
 
     return res;
   }
-
 
   Future<String> getUsername() async {
     String GQLgetUserName = r"""query {
@@ -38,11 +49,9 @@ class CommunitiesDatabase {
         }
       }""";
 
-
     final QueryOptions options = QueryOptions(
       document: gql(GQLgetUserName),
-      variables: <String, dynamic>{
-      },
+      variables: <String, dynamic>{},
     );
     GraphQLClient client = await getClient();
     final QueryResult result = await client.query(options);
@@ -53,7 +62,6 @@ class CommunitiesDatabase {
     print(result);
 
     print(result.data?["me"]["name"]);
-
 
     return result.data?["me"]["name"];
   }
@@ -66,11 +74,9 @@ class CommunitiesDatabase {
         }
       }""";
 
-
     final QueryOptions options = QueryOptions(
       document: gql(GQLgetUserName),
-      variables: <String, dynamic>{
-      },
+      variables: <String, dynamic>{},
     );
     GraphQLClient client = await getClient();
     final QueryResult result = await client.query(options);
@@ -81,7 +87,6 @@ class CommunitiesDatabase {
     print(result);
 
     print(result.data?["me"]["id"]);
-
 
     return result.data!["me"]["id"].toString();
   }
@@ -101,10 +106,9 @@ class CommunitiesDatabase {
   }
 
   Future<List<Community>> getAllCommunities() async {
-
     String GQLgetAllCommunities = r"""query 
     {
-      boards (limit: 100){
+      boards (limit: 100, board_kind: private){
         id
         workspace_id
         name
@@ -183,15 +187,15 @@ class CommunitiesDatabase {
 
     final List<dynamic> communities = result.data?["boards"] as List<dynamic>;
 
-
     List<Community> coms = communities
         .map((e) => Community.fromMap(e as Map<String, dynamic>))
         .toList();
     //Community comm = makeCommunityFromParams(coms, result.data?["boards"]["workspace_id"], result.data?["boards"]["name"]);
     List<Community> myCommunities = [];
-    for(Community community in coms) {
-      if (community.subscribers != null && community.subscribers!.contains(myId) && !myCommunities.contains(community))
-      {
+    for (Community community in coms) {
+      if (community.subscribers != null &&
+          community.subscribers!.contains(myId) &&
+          !myCommunities.contains(community)) {
         myCommunities.add(community);
       }
     }
@@ -199,7 +203,7 @@ class CommunitiesDatabase {
     print(myCommunities);
     return Future.delayed(
       Duration(milliseconds: 200),
-          () {
+      () {
         return Future.value(
           myCommunities,
         );
@@ -299,7 +303,8 @@ class CommunitiesDatabase {
     );
   }
 
-  Future addCommunityUser(String Community_ID, String userID) async // TODO: work?
+  Future addCommunityUser(
+      String Community_ID, String userID) async // TODO: work?
   {
     String GQLcreateMeeting = r"""
     mutation addUser($communityID: Int!, $user: Int!) {
@@ -310,27 +315,23 @@ class CommunitiesDatabase {
     
     """;
 
-
     final MutationOptions options = MutationOptions(
       document: gql(GQLcreateMeeting),
-      variables: <String, dynamic>{
-        'communityID': Community_ID,
-        'user': userID
-      },
+      variables: <String, dynamic>{'communityID': Community_ID, 'user': userID},
     );
 
     final QueryResult? result = await client?.mutate(options);
-    if (result != null ){
+    if (result != null) {
       if (result.hasException) {
         print(result.exception.toString());
       }
     }
     print(result);
     print("added!!!");
-
   }
 
-  Future<Meeting> joinMeeting(String Community_ID, String userID, Meeting meeting) async {
+  Future<Meeting> joinMeeting(
+      String Community_ID, String userID, Meeting meeting) async {
     String GQLcreateMeeting = r"""
     mutation createMeeting($communityID: Int!, $name: String, $vals: JSON) {
       create_item (board_id: $communityID, item_name: $name, column_values: $vals) {
@@ -361,10 +362,9 @@ class CommunitiesDatabase {
     print("added!!!");
     return Future.delayed(
       Duration(milliseconds: 200),
-          () {
+      () {
         return Future.value(meeting);
       },
     );
   }
-
 }
