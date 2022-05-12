@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon_project/models/community.dart';
 import 'package:hackathon_project/models/meeting.dart';
 import 'package:intl/intl.dart';
 
-class NextMeetingCards extends StatelessWidget {
-  const NextMeetingCards({Key? key, required this.meeting}) : super(key: key);
+class CommunityCard extends StatelessWidget {
+  const CommunityCard({Key? key, required this.community}) : super(key: key);
 
-  final Meeting meeting;
+  final Community community;
 
   @override
   Widget build(BuildContext context) {
@@ -24,23 +25,12 @@ class NextMeetingCards extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            meeting.name,
-            style: TextStyle(fontSize: 22),
+            community.name!,
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          Row(
-            children: [
-              Icon(Icons.place),
-              Text(meeting.location ?? "no location"),
-            ],
-          ),
-          Row(
-            children: [
-              Icon(Icons.person),
-              Text(meeting.members.length.toString())
-            ],
-          ),
-          Text(f.format(meeting.start)),
-          Text(f2.format(meeting.start)),
         ],
       ),
     );

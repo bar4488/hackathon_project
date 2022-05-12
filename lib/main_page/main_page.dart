@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon_project/communities_db.dart';
 import 'package:hackathon_project/main_page/main_controller.dart';
+import 'package:hackathon_project/main_page/widgets/CommunityCard.dart';
 import 'package:hackathon_project/main_page/widgets/NextMeetingCard.dart';
 import 'package:hackathon_project/models/meeting.dart';
 
@@ -33,6 +34,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffF8F8F8),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -113,10 +115,13 @@ class _MainPageState extends State<MainPage> {
                 GridView.count(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.zero,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                  padding: EdgeInsets.all(8),
                   crossAxisCount: 2,
                   children: [
-                    for (var color in Colors.primaries) Container(color: color)
+                    for (var community in controller.communities)
+                      CommunityCard(community: community)
                   ],
                 )
               ],
