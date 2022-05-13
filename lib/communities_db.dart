@@ -266,8 +266,8 @@ class CommunitiesDatabase {
     if (goodm != null) {
       await Future.wait([
         joinMeeting(communityId.toString(), await getID(), goodm),
-        addEndTime(communityId.toString(), goodm.end, goodm),
-        addStartTime(communityId.toString(), goodm.start, goodm)
+        addEndTime(communityId.toString(), meeting.end, goodm),
+        addStartTime(communityId.toString(), meeting.start, goodm)
       ]);
     }
     return meeting;
@@ -472,12 +472,7 @@ class CommunitiesDatabase {
         print(result.exception.toString());
       }
     }
-    return Future.delayed(
-      Duration(milliseconds: 200),
-      () {
-        return Future.value(meeting);
-      },
-    );
+    return meeting;
   }
 
   Future<Meeting> addStartTime(
@@ -514,12 +509,7 @@ class CommunitiesDatabase {
       }
     }
 
-    return Future.delayed(
-      Duration(milliseconds: 200),
-      () {
-        return Future.value(meeting);
-      },
-    );
+    return meeting;
   }
 
   // Future<Profile> getProfile(String userName)
