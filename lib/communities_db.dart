@@ -273,8 +273,8 @@ class CommunitiesDatabase {
       String id = await getID();
       await Future.wait([
         joinMeeting(communityId.toString(), id, goodm),
-        addEndTime(communityId.toString(), meeting.end,id, goodm),
-        addStartTime(communityId.toString(), meeting.start,id, goodm)
+        addEndTime(communityId.toString(), meeting.end, goodm),
+        addStartTime(communityId.toString(), meeting.start, goodm)
       ]);
     }
     return meeting;
@@ -452,7 +452,7 @@ class CommunitiesDatabase {
   }
 
   Future<Meeting> addEndTime(
-      String Community_ID, DateTime dateTime, String meetingID, Meeting meeting) async {
+      String Community_ID, DateTime dateTime, Meeting meeting) async {
     String GQLjoinMeeting = r"""
     mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: JSON!) {
       change_column_value (board_id: $communityID, item_id: $meetingID, column_id: "date", value: $vals) {
@@ -461,6 +461,7 @@ class CommunitiesDatabase {
     }
     
     """;
+    dateTime = dateTime.subtract(Duration(hours:3));
     DateFormat dateFormat = DateFormat("yyyy-MM-dd");
     DateFormat timeFormat = DateFormat("HH:mm:ss");
     String jason = '{"date":"' +
@@ -472,7 +473,7 @@ class CommunitiesDatabase {
       document: gql(GQLjoinMeeting),
       variables: <String, dynamic>{
         'communityID': int.parse(Community_ID),
-        'meetingID': int.parse(meetingID),
+        'meetingID': int.parse(meeting.id!),
         'vals': jason
       },
     );
@@ -487,7 +488,7 @@ class CommunitiesDatabase {
   }
 
   Future<Meeting> addStartTime(
-      String Community_ID, DateTime dateTime, String meetingID, Meeting meeting) async {
+      String Community_ID, DateTime dateTime, Meeting meeting) async {
     String GQLjoinMeeting = r"""
     mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: JSON!) {
       change_column_value (board_id: $communityID, item_id: $meetingID, column_id: "date4", value: $vals) {
@@ -496,6 +497,7 @@ class CommunitiesDatabase {
     }
     
     """;
+    dateTime = dateTime.subtract(Duration(hours:3));
     DateFormat dateFormat = DateFormat("yyyy-MM-dd");
     DateFormat timeFormat = DateFormat("HH:mm:ss");
     String jason = '{"date":"' +
@@ -508,7 +510,7 @@ class CommunitiesDatabase {
       document: gql(GQLjoinMeeting),
       variables: <String, dynamic>{
         'communityID': int.parse(Community_ID),
-        'meetingID': int.tryParse(meetingID),
+        'meetingID': int.tryParse(meeting.id!),
         'vals': jason
       },
     );
