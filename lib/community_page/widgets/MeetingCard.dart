@@ -114,26 +114,27 @@ class MeetingCard extends StatelessWidget {
                   height: 12,
                 ),
               ),
-            Positioned(
-                right: 8,
-                bottom: 8,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.check_circle,
-                      color: Color(0xff81E500),
-                    ),
-                    Text(
-                      "Joined!",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
+            if (joined)
+              Positioned(
+                  right: 8,
+                  bottom: 8,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.check_circle,
                         color: Color(0xff81E500),
                       ),
-                    ),
-                  ],
-                ))
+                      Text(
+                        "Joined!",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Color(0xff81E500),
+                        ),
+                      ),
+                    ],
+                  ))
           ],
         ),
       ),

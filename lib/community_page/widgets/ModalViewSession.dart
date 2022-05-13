@@ -72,19 +72,22 @@ class _ModalViewSessionState extends State<ModalViewSession> {
               ],
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xffFF9518),
-                  Color(0xffFF4D4D),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: widget.controller == null
-                ? null
-                : ElevatedButton(
+          widget.controller == null
+              ? Center()
+              : Container(
+                  decoration: BoxDecoration(
+                    gradient: !widget.meeting.members
+                            .contains(widget.controller!.myName!)
+                        ? LinearGradient(
+                            colors: [
+                              Color(0xffFF9518),
+                              Color(0xffFF4D4D),
+                            ],
+                          )
+                        : null,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       primary: Colors.transparent,
                       shadowColor: Colors.transparent,
@@ -92,16 +95,19 @@ class _ModalViewSessionState extends State<ModalViewSession> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    onPressed: () async {
-                      await widget.controller!.addUserToMeeting(
-                        widget.meeting.community.id!,
-                        widget.meeting.toMeeting(),
-                      );
-                      Navigator.of(context).pop();
-                    },
+                    onPressed: !widget.meeting.members
+                            .contains(widget.controller!.myName!)
+                        ? () async {
+                            await widget.controller!.addUserToMeeting(
+                              widget.meeting.community.id!,
+                              widget.meeting.toMeeting(),
+                            );
+                            Navigator.of(context).pop();
+                          }
+                        : null,
                     child: Text("Join!"),
                   ),
-          )
+                )
         ],
       ),
     );

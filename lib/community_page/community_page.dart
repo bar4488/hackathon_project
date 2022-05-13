@@ -177,6 +177,7 @@ class _CommunityPageState extends State<CommunityPage> {
             padding: const EdgeInsets.all(8.0),
             child: MeetingCard(
               meeting: meeting,
+              joined: meeting.members.contains(controller.myName),
               onPressed: () {
                 showModalBottomSheet(
                   context: context,

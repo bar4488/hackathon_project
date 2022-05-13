@@ -22,7 +22,7 @@ class CommunityPageController extends ChangeNotifier {
     meeting.members.add(myName!);
     myMeetings.add(meeting);
     notifyListeners();
-    return meeting;//await database.updateMeeting(meeting);
+    return meeting; //await database.updateMeeting(meeting);
   }
 
   Future<List<Meeting>> getAllCommunityMeetings(int communityId) async {
@@ -50,6 +50,7 @@ class CommunityPageController extends ChangeNotifier {
   Future<Meeting> createMeeting(int communityId, Meeting meeting) async {
     Meeting newM = await database.createMeeting(communityId, meeting);
     meetings = await getAllCommunityMeetings(communityId);
+    myMeetings = getMyCommunityMeetings();
     //meetings.add(meeting); // TODO: remove
     notifyListeners();
     return newM;

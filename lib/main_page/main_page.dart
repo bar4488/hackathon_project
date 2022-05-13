@@ -65,16 +65,20 @@ class _MainPageState extends State<MainPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              controller.loaded
-                                  ? "Welcome ${controller.username}"
-                                  : "Loading...",
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                overflow: TextOverflow.ellipsis,
-                                fontSize: 26,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xff595959),
+                            Image.network(
+                                "https://monday.com/p/wp-content/uploads/2020/07/monday-200x200-1.png"),
+                            Expanded(
+                              child: Text(
+                                controller.loaded
+                                    ? "Welcome ${controller.username.split(" ")[0]}"
+                                    : "Loading...",
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  overflow: TextOverflow.ellipsis,
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff595959),
+                                ),
                               ),
                             ),
                             Row(
