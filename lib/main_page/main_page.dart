@@ -103,68 +103,100 @@ class _MainPageState extends State<MainPage> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "What's happening now",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xff595959),
+                Visibility(
+                  maintainSemantics: true,
+                  maintainAnimation: true,
+                  maintainSize: true,
+                  maintainState: true,
+                  maintainInteractivity: false,
+                  visible: true,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "What's happening now",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xff595959),
+                        ),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 200,
-                  child: ListView(
-                    padding: EdgeInsets.only(left: 8),
-                    physics: BouncingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
+                Visibility(
+                  maintainSemantics: true,
+                  maintainAnimation: true,
+                  maintainSize: true,
+                  maintainState: true,
+                  maintainInteractivity: false,
+                  visible: true,
+                  child: SizedBox(
+                    height: 200,
+                    child: ListView(
+                      padding: EdgeInsets.only(left: 8),
+                      physics: BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        for (var meating in controller.nextMeetings)
+                          buildNextMeating(meating)
+                      ],
+                    ),
+                  ),
+                ),
+                Visibility(
+                  maintainSemantics: true,
+                  maintainAnimation: true,
+                  maintainSize: true,
+                  maintainState: true,
+                  maintainInteractivity: false,
+                  visible: true,
+                  child: Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "My Communities",
+                        style: TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xff595959),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Visibility(
+                  maintainSemantics: true,
+                  maintainAnimation: true,
+                  maintainSize: true,
+                  maintainState: true,
+                  maintainInteractivity: false,
+                  visible: true,
+                  child: GridView.count(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                    padding: EdgeInsets.all(8),
+                    crossAxisCount: 2,
                     children: [
-                      for (var meating in controller.nextMeetings)
-                        buildNextMeating(meating)
+                      for (var community in controller.communities)
+                        CommunityCard(
+                          community: community,
+                          onPress: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => CommunityPage(
+                                  community: community,
+                                ),
+                              ),
+                            );
+                          },
+                        )
                     ],
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(8),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "My Communities",
-                      style: TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xff595959),
-                      ),
-                    ),
-                  ),
-                ),
-                GridView.count(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
-                  padding: EdgeInsets.all(8),
-                  crossAxisCount: 2,
-                  children: [
-                    for (var community in controller.communities)
-                      CommunityCard(
-                        community: community,
-                        onPress: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => CommunityPage(
-                                community: community,
-                              ),
-                            ),
-                          );
-                        },
-                      )
-                  ],
                 )
               ],
             ),
