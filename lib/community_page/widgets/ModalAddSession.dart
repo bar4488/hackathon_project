@@ -86,12 +86,14 @@ class _ModalAddSessionState extends State<ModalAddSession> {
             leading: Icon(Icons.place),
             title: TextFormField(
               decoration: InputDecoration(hintText: "location"),
+              controller: locationController,
             ),
           ),
           ListTile(
             leading: Icon(Icons.text_increase),
             title: TextFormField(
               decoration: InputDecoration(hintText: "description"),
+              controller: descriptionController,
             ),
           ),
           Container(
@@ -125,6 +127,9 @@ class _ModalAddSessionState extends State<ModalAddSession> {
                       location: locationController.text.isEmpty
                           ? null
                           : locationController.text,
+                      description: descriptionController.text.isEmpty
+                          ? null
+                          : descriptionController.text,
                       members: ["me"],
                     ),
                   );

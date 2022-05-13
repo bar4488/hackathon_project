@@ -227,7 +227,7 @@ class CommunitiesDatabase {
 
     final List<dynamic> communities = result.data?["boards"] as List<dynamic>;
 
-    print("hit");
+    //print("hit");
 
     List<Community> coms = communities
         .map((e) => Community.fromMap(e as Map<String, dynamic>))
@@ -334,7 +334,7 @@ class CommunitiesDatabase {
           ',"kind":"person"},';
     }
     jason += '{"id":' + userID + ',"kind":"person"}]}';
-    print(jason);
+    //print(jason);
     final MutationOptions options = MutationOptions(
       document: gql(GQLjoinMeeting),
       variables: <String, dynamic>{
@@ -536,7 +536,7 @@ class CommunitiesDatabase {
       String Community_ID, String description, Meeting meeting) async {
     String GQLjoinMeeting =
         r"""
-    mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: String) {
+    mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: JSON!) {
       change_column_value (board_id: $communityID, item_id: $meetingID, column_id: "text", value: $vals) {
           id
        }
@@ -569,7 +569,7 @@ class CommunitiesDatabase {
     if (Community_ID == "2663479462") {
       GQLjoinMeeting =
           r"""
-    mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: String) {
+    mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: JSON!) {
       change_column_value (board_id: $communityID, item_id: $meetingID, column_id: "text0", value: $vals) {
           id
        }
@@ -579,7 +579,7 @@ class CommunitiesDatabase {
     } else if (Community_ID == "2664249875") {
       GQLjoinMeeting =
           r"""
-    mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: String) {
+    mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: JSON!) {
       change_column_value (board_id: $communityID, item_id: $meetingID, column_id: "text7", value: $vals) {
           id
        }
@@ -589,7 +589,7 @@ class CommunitiesDatabase {
     } else {
       GQLjoinMeeting =
           r"""
-    mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: String) {
+    mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: JSON!) {
       change_column_value (board_id: $communityID, item_id: $meetingID, column_id: "text9", value: $vals) {
           id
        }
