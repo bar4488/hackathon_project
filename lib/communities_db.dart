@@ -397,6 +397,49 @@ class CommunitiesDatabase {
     return 0;
   }
 
+  Future<Profile?> getProfile(String name) async {
+    String GQLgetProfiles =
+        r"""query getProfiles ($com_id: [Int])
+{
+  boards (ids: $com_id){
+    name
+		items {
+      name
+      column_values{
+        value
+      }
+    }
+  }
+}""";
+
+    final QueryOptions options = QueryOptions(
+      document: gql(GQLgetProfiles),
+      variables: <String, dynamic>{
+        'com_id': metadata_id,
+      },
+    );
+    GraphQLClient client = await getClient();
+    final QueryResult result = await client.query(options);
+    if (result.hasException) {
+      print(result.exception.toString());
+    }
+
+    for (dynamic item in result.data?['boards'][0]['items']) {
+      if (item['name'] == name) {
+        String age_string = item['column_values'][1]['value'];
+        String degree_string = item['column_values'][0]['value'];
+        String desc_string = item['column_values'][2]['value'];
+        return Profile(
+            name: name,
+            age: int.parse((age_string).substring(1, age_string.length - 1)),
+            degree: degree_string.substring(1, degree_string.length - 1),
+            description: desc_string.substring(1, desc_string.length - 1));
+      }
+    }
+
+    return null;
+  }
+
   Future<Meeting> addEndTime(
       String Community_ID, DateTime dateTime, Meeting meeting) async {
     String GQLjoinMeeting = r"""

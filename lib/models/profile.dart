@@ -2,46 +2,46 @@
 import 'dart:convert';
 
 class Profile {
-  int? id;
   String? name;
   String? description;
+  String? degree;
   int? age;
   Profile({
-    this.id,
     this.name,
     this.description,
+    this.degree,
     this.age,
   });
 
   Profile copyWith({
-    int? id,
     String? name,
     String? description,
+    String? degree,
     int? age,
   }) {
     return Profile(
-      id: id ?? this.id,
       name: name ?? this.name,
       description: description ?? this.description,
+      degree: degree ?? this.degree,
       age: age ?? this.age,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
       'name': name,
       'description': description,
+      'degree': degree,
       'age': age,
     };
   }
 
   factory Profile.fromMap(Map<String, dynamic> map) {
     return Profile(
-      id: map['id'] != null ? map['id'] as int : null,
       name: map['name'] != null ? map['name'] as String : null,
       description:
           map['description'] != null ? map['description'] as String : null,
+      degree: map['degree'] != null ? map['degree'] as String : null,
       age: map['age'] != null ? map['age'] as int : null,
     );
   }
@@ -53,7 +53,7 @@ class Profile {
 
   @override
   String toString() {
-    return 'Profile(id: $id, name: $name, description: $description, age: $age)';
+    return 'Profile(name: $name, description: $description, degree: $degree, age: $age)';
   }
 
   @override
@@ -61,14 +61,17 @@ class Profile {
     if (identical(this, other)) return true;
 
     return other is Profile &&
-        other.id == id &&
         other.name == name &&
         other.description == description &&
+        other.degree == degree &&
         other.age == age;
   }
 
   @override
   int get hashCode {
-    return id.hashCode ^ name.hashCode ^ description.hashCode ^ age.hashCode;
+    return name.hashCode ^
+        description.hashCode ^
+        degree.hashCode ^
+        age.hashCode;
   }
 }
