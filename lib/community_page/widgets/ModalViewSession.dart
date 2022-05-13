@@ -8,10 +8,10 @@ class ModalViewSession extends StatefulWidget {
   const ModalViewSession({
     Key? key,
     required this.meeting,
-    required this.controller,
+    this.controller,
   }) : super(key: key);
   final CommunityMeeting meeting;
-  final CommunityPageController controller;
+  final CommunityPageController? controller;
 
   @override
   State<ModalViewSession> createState() => _ModalViewSessionState();
@@ -82,23 +82,25 @@ class _ModalViewSessionState extends State<ModalViewSession> {
               ),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.transparent,
-                shadowColor: Colors.transparent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              onPressed: () async {
-                await widget.controller.addUserToMeeting(
-                  widget.meeting.community.id!,
-                  widget.meeting.toMeeting(),
-                );
-                Navigator.of(context).pop();
-              },
-              child: Text("Join!"),
-            ),
+            child: widget.controller == null
+                ? null
+                : ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    onPressed: () async {
+                      await widget.controller!.addUserToMeeting(
+                        widget.meeting.community.id!,
+                        widget.meeting.toMeeting(),
+                      );
+                      Navigator.of(context).pop();
+                    },
+                    child: Text("Join!"),
+                  ),
           )
         ],
       ),
