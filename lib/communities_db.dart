@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:graphql/client.dart';
 import 'package:hackathon_project/models/community.dart';
 import 'package:hackathon_project/models/meeting.dart';
@@ -273,8 +274,12 @@ class CommunitiesDatabase {
       String id = await getID();
       await Future.wait([
         joinMeeting(communityId.toString(), id, goodm),
-        addEndTime(communityId.toString(), meeting.end,id, goodm),
-        addStartTime(communityId.toString(), meeting.start,id, goodm)
+        addDescription(communityId.toString(),
+            meeting.description == null ? "" : meeting.description!, goodm),
+        addLocation(communityId.toString(),
+            meeting.location == null ? "" : meeting.location!, goodm),
+        addEndTime(communityId.toString(), meeting.end, id, goodm),
+        addStartTime(communityId.toString(), meeting.start, id, goodm),
       ]);
     }
     return meeting;
@@ -451,9 +456,10 @@ class CommunitiesDatabase {
     return null;
   }
 
-  Future<Meeting> addEndTime(
-      String Community_ID, DateTime dateTime, String meetingID, Meeting meeting) async {
-    String GQLjoinMeeting = r"""
+  Future<Meeting> addEndTime(String Community_ID, DateTime dateTime,
+      String meetingID, Meeting meeting) async {
+    String GQLjoinMeeting =
+        r"""
     mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: JSON!) {
       change_column_value (board_id: $communityID, item_id: $meetingID, column_id: "date", value: $vals) {
           id
@@ -486,9 +492,10 @@ class CommunitiesDatabase {
     return meeting;
   }
 
-  Future<Meeting> addStartTime(
-      String Community_ID, DateTime dateTime, String meetingID, Meeting meeting) async {
-    String GQLjoinMeeting = r"""
+  Future<Meeting> addStartTime(String Community_ID, DateTime dateTime,
+      String meetingID, Meeting meeting) async {
+    String GQLjoinMeeting =
+        r"""
     mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: JSON!) {
       change_column_value (board_id: $communityID, item_id: $meetingID, column_id: "date4", value: $vals) {
           id
@@ -556,15 +563,38 @@ class CommunitiesDatabase {
 
   Future<Meeting> addLocation(
       String Community_ID, String location, Meeting meeting) async {
-    String GQLjoinMeeting =
-        r"""
+    String GQLjoinMeeting = "";
+    if (Community_ID == "2663479462") {
+      GQLjoinMeeting =
+          r"""
     mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: String) {
-      change_column_value (board_id: $communityID, item_id: $meetingID, column_id: "text", value: $vals) {
+      change_column_value (board_id: $communityID, item_id: $meetingID, column_id: "text0", value: $vals) {
           id
        }
     }
     
     """;
+    } else if (Community_ID == "2664249875") {
+      GQLjoinMeeting =
+          r"""
+    mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: String) {
+      change_column_value (board_id: $communityID, item_id: $meetingID, column_id: "text7", value: $vals) {
+          id
+       }
+    }
+    
+    """;
+    } else {
+      GQLjoinMeeting =
+          r"""
+    mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: String) {
+      change_column_value (board_id: $communityID, item_id: $meetingID, column_id: "text9", value: $vals) {
+          id
+       }
+    }
+    
+    """;
+    }
 
     final MutationOptions options = MutationOptions(
       document: gql(GQLjoinMeeting),
