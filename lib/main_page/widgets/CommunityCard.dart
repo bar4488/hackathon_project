@@ -16,7 +16,6 @@ class CommunityCard extends StatelessWidget {
     var f = DateFormat.yMEd();
     var f2 = DateFormat.jm();
     return Container(
-      width: 230,
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
           color: Colors.white,

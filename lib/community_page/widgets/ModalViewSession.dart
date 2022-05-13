@@ -56,7 +56,7 @@ class _ModalViewSessionState extends State<ModalViewSession> {
             ),
           ),
           SizedBox(
-            height: 400,
+            height: 300,
             child: ListView(
               children: [
                 for (var member in widget.meeting.members)

@@ -66,7 +66,8 @@ class _MainPageState extends State<MainPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Image.network(
-                                "https://monday.com/p/wp-content/uploads/2020/07/monday-200x200-1.png"),
+                                "https://monday.com/p/wp-content/uploads/2020/07/monday-200x200-1.png",
+                            height: 48),
                             Expanded(
                               child: Text(
                                 controller.loaded
@@ -183,6 +184,7 @@ class _MainPageState extends State<MainPage> {
                     physics: NeverScrollableScrollPhysics(),
                     crossAxisSpacing: 8,
                     mainAxisSpacing: 8,
+                    childAspectRatio: 3/4,
                     padding: EdgeInsets.all(8),
                     crossAxisCount: 2,
                     children: [
