@@ -42,13 +42,13 @@ class _ModalViewSessionState extends State<ModalViewSession> {
             title: Text("Start date: ${f.format(widget.meeting.start)}"),
           ),
           ListTile(
-            title: Text("End date: ${f.format(widget.meeting.start)}"),
+            title: Text("End date: ${f.format(widget.meeting.end)}"),
           ),
           ListTile(
             title: Text("Location: ${widget.meeting.location ?? 'unknown'}"),
           ),
           Text(
-            "membres",
+            "members",
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,

@@ -13,6 +13,10 @@ class Meeting {
   String? location;
   List<String> members = [];
 
+  bool get now =>
+      DateTime.now().compareTo(start) != -1 &&
+      DateTime.now().compareTo(end) != 1;
+
   Duration get duration => end.difference(start);
 
   Meeting({
@@ -70,7 +74,7 @@ class Meeting {
       id: map['id'],
       start: start.isEmpty ? DateTime.now() : f.parse(start),
       end: end.isEmpty ? DateTime.now() : f.parse(end),
-      members: members.split(", "),
+      members: members.isEmpty ? [] : members.split(", "),
       description: description,
       location: location,
     );

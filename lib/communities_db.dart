@@ -47,8 +47,7 @@ class CommunitiesDatabase {
   }
 
   Future<String> getUsername() async {
-    String GQLgetUserName =
-        r"""query {
+    String GQLgetUserName = r"""query {
        me {
           name
           id
@@ -69,8 +68,7 @@ class CommunitiesDatabase {
   }
 
   Future<String> getID() async {
-    String GQLgetUserName =
-        r"""query {
+    String GQLgetUserName = r"""query {
        me {
           name
           id
@@ -105,8 +103,7 @@ class CommunitiesDatabase {
   }
 
   Future<List<Community>> getAllCommunities() async {
-    String GQLgetAllCommunities =
-        r"""query 
+    String GQLgetAllCommunities = r"""query 
     {
       boards (limit: 100, board_kind: private){
         id
@@ -147,8 +144,7 @@ class CommunitiesDatabase {
   }
 
   Future<List<Community>> getMyBoards(int communityId) async {
-    String GQLgetCommunity =
-        r"""query getBoards
+    String GQLgetCommunity = r"""query getBoards
     {
       boards{
         id
@@ -194,8 +190,7 @@ class CommunitiesDatabase {
   }
 
   Future<Community> getCommunity(int communityId) async {
-    String GQLgetCommunity =
-        r"""query getCommunity ($com_id: [Int])
+    String GQLgetCommunity = r"""query getCommunity ($com_id: [Int])
     {
       boards (ids: $com_id ){
         id
@@ -237,8 +232,7 @@ class CommunitiesDatabase {
   }
 
   Future<Meeting> createMeeting(int communityId, Meeting meeting) async {
-    String GQLcreateMeeting =
-        r"""
+    String GQLcreateMeeting = r"""
     mutation createMeeting($communityID: Int!, $name: String) {
       create_item (board_id: $communityID, item_name: $name) {
           id
@@ -270,9 +264,11 @@ class CommunitiesDatabase {
       }
     }
     if (goodm != null) {
-      this.joinMeeting(communityId.toString(), await getID(), goodm);
-      this.addEndTime(communityId.toString(), goodm.end, goodm);
-      this.addStartTime(communityId.toString(), goodm.start, goodm);
+      await Future.wait([
+        joinMeeting(communityId.toString(), await getID(), goodm),
+        addEndTime(communityId.toString(), goodm.end, goodm),
+        addStartTime(communityId.toString(), goodm.start, goodm)
+      ]);
     }
     return meeting;
   }
@@ -284,8 +280,7 @@ class CommunitiesDatabase {
   Future addCommunityUser(
       String Community_ID, String userID) async // TODO: work?
   {
-    String GQLcreateMeeting =
-        r"""
+    String GQLcreateMeeting = r"""
     mutation addUser($communityID: Int!, $user: Int!) {
       add_subscribers_to_board (board_id: $communityID, user_ids: [$user], kind:owner) {
           id
@@ -309,8 +304,7 @@ class CommunitiesDatabase {
 
   Future<Meeting> joinMeeting(
       String Community_ID, String userID, Meeting meeting) async {
-    String GQLjoinMeeting =
-        r"""
+    String GQLjoinMeeting = r"""
     mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: JSON!) {
       change_column_value (board_id: $communityID, item_id: $meetingID, column_id: "person", value: $vals) {
           id
@@ -321,9 +315,12 @@ class CommunitiesDatabase {
 
     String jason = '{"personsAndTeams":[';
     for (String member in meeting.members) {
-      jason += '{"id":' + getIdFromName(member).toString() + ',"kind":"person"},';
+      jason += '{"id":' +
+          (await getIdFromName(member)).toString() +
+          ',"kind":"person"},';
     }
     jason += '{"id":' + userID + ',"kind":"person"}]}';
+    print(jason);
     final MutationOptions options = MutationOptions(
       document: gql(GQLjoinMeeting),
       variables: <String, dynamic>{
@@ -344,8 +341,7 @@ class CommunitiesDatabase {
   }
 
   Future<List<String>> getSubscribers(int communityID) async {
-    String GQLgetSubscribers =
-        r"""query getSubscribers ($com_id: [Int])
+    String GQLgetSubscribers = r"""query getSubscribers ($com_id: [Int])
     {
       boards (ids: $com_id ){
         subscribers{
@@ -375,8 +371,7 @@ class CommunitiesDatabase {
   }
 
   Future<int> getIdFromName(String name) async {
-    String GQLgetUsers =
-        r"""query {
+    String GQLgetUsers = r"""query {
        users {
           name
           id
@@ -404,8 +399,7 @@ class CommunitiesDatabase {
 
   Future<Meeting> addEndTime(
       String Community_ID, DateTime dateTime, Meeting meeting) async {
-    String GQLjoinMeeting =
-        r"""
+    String GQLjoinMeeting = r"""
     mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: JSON!) {
       change_column_value (board_id: $communityID, item_id: $meetingID, column_id: "date", value: $vals) {
           id
@@ -445,8 +439,7 @@ class CommunitiesDatabase {
 
   Future<Meeting> addStartTime(
       String Community_ID, DateTime dateTime, Meeting meeting) async {
-    String GQLjoinMeeting =
-        r"""
+    String GQLjoinMeeting = r"""
     mutation createMeeting($communityID: Int!, $meetingID: Int!, $vals: JSON!) {
       change_column_value (board_id: $communityID, item_id: $meetingID, column_id: "date4", value: $vals) {
           id
@@ -486,13 +479,9 @@ class CommunitiesDatabase {
     );
   }
 
-
-
   // Future<Profile> getProfile(String userName)
   // {
   //
   // }
-
-
 
 }
